@@ -1,0 +1,14 @@
+MIDlet-Name: 明珠三国3_0
+MIDlet-Version: 3.0
+MIDlet-Vendor: PiP
+MIDlet-Jar-URL: Sanguo_Nokia5310XM_CCABNY26.jar
+MIDlet-Jar-Size: 770260
+MIDlet-Description: 支持:Nokia5310XM系列.
+MIDlet-Icon: /icon.png
+MIDlet-Info-URL: http://3g.pipgame.cn/
+MIDlet-1: 明珠三国3_0, /icon.png, com.pip.sanguo.SanguoMIDlet
+Media-Price: .
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-2.0
+Nokia-MIDlet-App-Orientation: portrait
+Nokia-MIDlet-On-Screen-Keypad: no

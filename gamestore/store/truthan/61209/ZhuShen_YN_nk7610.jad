@@ -1,0 +1,10 @@
+MIDlet-1: Tru Than,/icon.png,GameMIDlet
+MIDlet-Description: nk7610
+MIDlet-Icon: /icon.png
+MIDlet-Jar-Size: 726120
+MIDlet-Jar-URL: ZhuShen_YN_nk7610.jar
+MIDlet-Name: Tru Than
+MIDlet-Vendor: T4game
+MIDlet-Version: 1.06.01
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-2.0

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0.0
+MIDlet-Vendor: 掌上世界
+MIDlet-Version: 2.01
+Nokia-MIDlet-On-Screen-Keypad: no
+Nokia-MIDlet-App-Orientation: portrait
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-1: SwordOL, /icon.png, GameApp
+MIDlet-Icon: /icon.png
+MIDlet-Name: SwordOL
+MicroEdition-Profile: MIDP-2.0
+MIDlet-Jar-Size: 2344447
+MIDlet-Jar-URL: Sword_S240X320_SE.jar
+Nokia-MIDlet-Category: Game

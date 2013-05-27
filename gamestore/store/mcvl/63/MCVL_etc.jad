@@ -1,0 +1,10 @@
+MIDlet-1: MCVL, /icon.png, SFMIDlet
+MIDlet-Icon: /icon.png
+MIDlet-Jar-Size: 2238566
+MIDlet-Jar-URL: MCVL_etc.jar
+MIDlet-Name: MCVL
+MIDlet-Vendor: SilentFire
+MIDlet-Version: 2.0.1
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0
+MIDlet-Permissions: javax.microedition.io.Connector.http, javax.microedition.io.Connector.socket

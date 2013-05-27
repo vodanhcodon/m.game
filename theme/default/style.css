@@ -1,0 +1,125 @@
+body {
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Comic Sans MS;
+	padding: 0;
+	margin: 0;
+	-webkit-text-size-adjust: 120%;
+	/*-webkit-transform: rotate(30deg);*/
+	-webkit-transition-duration: 3;
+	padding: 3px;
+	-webkit-border-radius: 8px;
+	-webkit-box-shadow: 6px 6px 5px #333333;
+}
+
+td {
+	padding-left: 4px;
+	font-size: 12px;
+}
+/*
+a{
+	webkit-tap-highlight-color:blue;
+}
+*/
+img {
+	border: 2px solid #F79646;
+}
+
+.header {
+	/*background: url(../../images/bg.png);*/
+	background-color: #00AFEF /*background: url(../../images/banner.png);*/
+}
+
+/* Menu header */
+td.tab a,td.tab-selected a {
+	text-decoration: none;
+	font-weight: bold;
+	color: white;
+}
+
+td.tab-selected a {
+	color: white;
+}
+
+td.tab a:hover,td.tab-selected a:hover {
+	color: white;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+div.wrap {
+	/*background-color: #71BC00;*/
+	background-color: #E6B9B8;
+	border-bottom: 1px solid #E6B9B8;
+	border-top: 1px solid #E6B9B8;
+}
+
+td.tab,td.tab-selected {
+	text-align: center;
+	padding: 1px;
+	/*border-bottom: 1px solid #E6B9B8;*/
+}
+
+td.tab-selected {
+	background-color: #C0504D;
+	border-top: 1px solid #C0504D;
+	border-bottom: 1px solid #C0504D;
+}
+
+/* List category */
+td.category-right-noborder a, td.category-left-noborder a  {
+	text-decoration: none;
+}
+
+td.category-right-noborder {
+	border-right: 1px dashed #C0504D;
+	
+}
+
+td.category-right a, td.category-left a  {
+	text-decoration: none;
+}
+
+td.category-right {
+	border-right: 1px dashed #C0504D;
+	
+}
+
+td.category-right, td.category-left {
+	border-top: 1px dashed #C0504D;
+}
+
+/* Danh sach app game theo top 3 danh muc */
+td.danhmuc {
+	background-color: #D9D9D9;
+	font-weight: bold;
+	height: 25px;
+}
+
+.button {
+    border: 1px solid #006;
+    background: #BFBFBF;
+}
+
+.chitiet {
+	text-align: right;
+}
+
+.header-chitiet {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+div {
+	-webkit-border-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+}
+
+.roundedbox {
+	padding: 2px;
+	-webkit-border-radius: 8px;
+	-webkit-box-shadow: 6px 6px 5px #333333;
+}
