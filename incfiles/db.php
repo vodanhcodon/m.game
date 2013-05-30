@@ -8,7 +8,7 @@ $db_host = 'localhost';
 // $db_user = 'vteen_johncms';
 // $db_pass = '^&89aiuTRAL*#31^%';
 
-$db_name = 'db_gom';
+$db_name = 'gom';
 $db_user = 'root';
 $db_pass = '';
 
