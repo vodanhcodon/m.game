@@ -1,0 +1,29 @@
+{% block item %}
+<tr>
+    <td colspan="2" class="danhmuc">{{ danhmuc }}</td>
+</tr>
+<tr height="8px;">
+    <td colspan="2"></td>
+</tr>
+{% for item in gameapps %}
+<tr>
+    <td width="30%"><img src="{{ item.thumbnail }}"/></td>
+    <td width="70%" valign="top"><a href="{{ item.download }}">Tải miễn phí</a><br/>
+        <br/>
+        số lượt tải: {{ item.total_download }}<br/>
+        <br/>
+        <a href="#">Thiết bị hỗ trợ: {{ item.device_support }}</a><br/>
+        <br/>
+        <a href="#">Xem ảnh giới thiệu game</a></td>
+</tr>
+<tr>
+    <td colspan="2" class="header-chitiet">Diễn đàn liên quan</td>
+</tr>
+<tr>
+    <td colspan="2">Nội dung tin mới trong diễn đàn.</td>
+</tr>
+<tr>
+    <td colspan="2" class="header-chitiet">Giới thiệu</td>
+</tr>
+{% endfor %}
+{% endblock %}

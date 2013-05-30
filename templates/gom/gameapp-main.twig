@@ -1,0 +1,152 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="vn">
+    <head>
+        {% block head %}
+            <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+            <meta http-equiv="Content-Style-Type" content="text/css"/>
+            <meta name="Generator" content="JohnCMS, http://johncms.com"/>
+            <meta name="keywords" content="Game Online Hot"/>
+            <meta name="description" content="Game online vteen.vn"/>
+            <link rel="stylesheet" href="http://localhost/Gom-wapsite/theme/default/style.css" type="text/css"/>
+            <link rel="shortcut icon" href="http://localhost/Gom-wapsite/favicon.ico"/>
+            <link rel="alternate" type="application/rss+xml" title="RSS | Trang web Tin tức" href="http://localhost/Gom-wapsite/rss/rss.php"/>
+            <title>{{ title?title: 'Copyright  2012 vteen.vn'}}</title>
+        {% endblock head %}
+        </head>
+        <body>
+            {% block body %}
+                <table width="100%" cellspacing="0" border="0" id="table1">
+            {% block banner %}
+                        <tr class="header">
+                            <td colspan="2">
+                                <a href="http://localhost/Gom-wapsite">
+                                    <img border="0" style="margin-top: 8px; border: none;" alt="logo" src="http://localhost/Gom-wapsite/theme/default/images/logo.png"/>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+            {% endblock banner %}
+            {% block navigation %}
+                        <tr>
+                            <td colspan="2" style="border-top: 1px solid #ffffff; padding: 0;">
+                                <div class="wrap">
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                        <tr>
+                                            <td class="tab-selected"><a href="#">Thể loại 1</a></td>
+                                            <td class="tab"><a href="#">Thể loại 2</a></td>
+                                            <td class="tab"><a href="#">Top tải</a></td>
+                                            <td class="tab"><a href="#">Sự kiện hot</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+            {% endblock %}
+
+            {% block search %}
+                        <tr>
+                            <td colspan="2">
+                                <form method="get" action="http://localhost/Gom-wapsite/gamestore/index.php?src=&amp;act=search">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="20%">Tên game</td>
+                                            <td width="60%"><input type="hidden" id="act" name="act" value="search"/>
+                                                <input type="text" name="app_game_name" id="app_game_name" value="" style="width: 90%; border: 2px solid #F79646;"/></td>
+                                            <td width="20%"><input type="submit" name="btn_search" id="btn_search" value="Tìm kiếm" class="button"/></td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </td>
+                        </tr>
+            {% endblock %}
+
+
+
+            {% block content %}
+
+            {% endblock %}
+            {% block search_advance %}
+                        <tr>
+                            <td colspan="2">
+                                <form method="get" action="http://localhost/Gom-wapsite/gamestore/index.php?src=&amp;act=advanced">
+                                    <table width="100%">
+                                        <tr>
+                                            <td colspan="2">
+                                                <span style="font-size: medium; color:red; font-weight: bold;">
+                                                    Tìm kiếm
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tên game</td>
+                                            <td>
+                                                <input type="hidden" name="act" id="act" value="advanced"/>
+                                                <input type="text" name="advanced_name" id="advanced_name" value="" style="width: 88%; border: 2px solid #F79646;"/></td>
+                                        </tr>
+                                                                {% block danhmuc %}
+
+
+                                        <tr>
+                                            <td>Danh mục</td>
+                                            <td>
+                                                <select name="advanced_cate" id="advanced_cate" style="width: 90%; border: 2px solid #F79646;">
+                                                   {% for key, value in danhmucs %}
+
+                                                        <option value="{{ key }}">{{ value }}</option>
+                                                  {% endfor %}
+                                                    </select>
+                                                </td>
+                                            </tr>
+
+                                                                {% endblock %}
+                                            <tr>
+                                                <td>Thể loại</td>
+                                                <td>
+                                                    <select name="advanced_type" id="advanced_type" style="width: 90%; border: 2px solid #F79646;">
+                                                        <option>Tất cả</option>
+                                                        <option>Webgame</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <input type="submit" value="Tìm kiếm" id="search" name="search" class="button"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </td>
+                            </tr>
+                 {%  endblock %}
+                        {% block jumplink %}
+                            <tr>
+                                <td colspan="2"><hr/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><table width="100%">
+                                        <tr>
+                                            <td align="center"><a href="#" style="">Top hot</a></td>
+                                            <td align="center"><a href="#">Top tải</a></td>
+                                            <td align="center"><a href="#">Sự kiện hot</a></td>
+                                            <td align="center"><a href="#">Diễn đàn</a></td>
+                                        </tr>
+                                    </table></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><hr/></td>
+                            </tr>
+                        {% endblock %}
+                        {% block footer %}
+                            <tr bgcolor="#D9D9D9">
+                                <td colspan="2" style="font-size: small; text-align: center"><span style="color:red; font-weight: bold;">&copy; Copyright 2013 Vteen.vn</span></td>
+                            </tr>
+                        {% endblock %}
+                        </table>
+{% endblock %}
+                    </body>
+                </html>
