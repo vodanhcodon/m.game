@@ -556,7 +556,7 @@ switch($act){
 																	 `a`.`j2me_jar_file_path`, `a`.`android_apk_file_path`, `a`.`short_decription`
 																FROM `gom_game_app` as `a` 
 												 					WHERE `a`.`danh_muc_id` = ".$id." ORDER BY `a`.`last_update` LIMIT ".$per_page*($current_page-1).", ".$per_page);
-				if (mysql_num_rows($danhmuc)) {
+				if (mysql_num_rows($lst_game_app_top9_in_danhmuc)) {
 					while (($res_game_app_top9 = mysql_fetch_assoc($lst_game_app_top9_in_danhmuc)) !== false) {
 						if(isset($res_game_app_top9['logo'])) {
 							echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res_game_app_top9['logo'] . '" /></a></td>';
@@ -576,6 +576,59 @@ switch($act){
 				for ($i=1; $i<=$max_pages; $i++) {
 					if ($current_page!=$i)
 						echo ' <a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=category&amp;id='.$id.'&amp;page='.$i.'">'.$i.'</a> ';
+					else
+						echo " ".$i." " ;
+				}
+				echo '</td></tr>';
+				echo '<tr><td colspan="2"><hr /></td></tr>';
+			}
+		}
+		break;
+	case 'type':
+		echo '<tr height="8px;"><td colspan="2"></td></tr>';
+		$theloai = mysql_query("SELECT `a`.`name`, `a`.`id` FROM `gom_the_loai` as `a` WHERE `a`.`id` = ".$id);
+		if (mysql_num_rows($theloai)) {
+			//max displayed per page
+			$per_page = 9;
+			// count records
+			$count_record = mysql_num_rows(mysql_query("SELECT `a`.`id` FROM `gom_the_loai_relation` as `b`
+																		INNER JOIN `gom_game_app` as `a` ON `b`.`game_app_id` = `a`.`id`
+																	WHERE `b`.`the_loai_id` = ".$id." ORDER BY `a`.`last_update`"));
+			// count max pages
+			$max_pages = ceil($count_record / $per_page);
+			// current page
+			if(isset($_GET['page']))
+				$current_page = $_GET['page'];
+			else
+				$current_page = 1;
+			while (($res_type = mysql_fetch_assoc($theloai)) !== false) {
+				echo '<tr><td colspan="2" class="danhmuc">' . $res_type['name'] . '</td></tr>';
+				echo '<tr height="8px;"><td colspan="2">'.$str_query.'</td></tr>';
+				$lst_game_app_top9_in_theloai = mysql_query("SELECT `a`.`id`, `a`.`logo`, `a`.`name`, `a`.`j2me_jad_file_path`,
+																	 `a`.`j2me_jar_file_path`, `a`.`android_apk_file_path`, `a`.`short_decription`
+																FROM `gom_the_loai_relation` as `b`
+																		INNER JOIN `gom_game_app` as `a` ON `b`.`game_app_id` = `a`.`id`
+																	WHERE `b`.`the_loai_id` = ".$id." ORDER BY `a`.`last_update` LIMIT ".$per_page*($current_page-1).", ".$per_page);
+				if (mysql_num_rows($lst_game_app_top9_in_theloai)) {
+					while (($res_game_app_top9 = mysql_fetch_assoc($lst_game_app_top9_in_theloai)) !== false) {
+						if(isset($res_game_app_top9['logo'])) {
+							echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res_game_app_top9['logo'] . '" /></a></td>';
+							echo '<td width="70%" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'">Chi tiết</a></div></td></tr>';
+						} else {
+							echo '<tr><td colspan="2" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '</td></tr>';
+						}
+						echo '<tr><td colspan="2"><hr /></td></tr>';
+					}
+				}
+				/*
+				 -----------------------------------------------------------------
+				Paging block
+				-----------------------------------------------------------------
+				*/
+				echo '<tr><td colspan="2">Đến trang';
+				for ($i=1; $i<=$max_pages; $i++) {
+					if ($current_page!=$i)
+						echo ' <a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=type&amp;id='.$id.'&amp;page='.$i.'">'.$i.'</a> ';
 					else
 						echo " ".$i." " ;
 				}

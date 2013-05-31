@@ -120,7 +120,7 @@ echo '<div class="tmn">' .
 $act = $_GET['act'];
 $id = $_GET['id'];
 switch ($act) {
-	case 'category':
+	case 'type':
 		$active = 1;
 		break;
 	case 'topdownload':
@@ -141,9 +141,9 @@ echo '<tr><td colspan="2"></td></tr>' .
 if(mysql_num_rows($sql_cate_top2)) {
 	while(($res = mysql_fetch_assoc($sql_cate_top2)) !== false) {
 		if(($active == 1) && ($res['id'] == $id))
-			echo '<td class="tab-selected"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=category&amp;id='.$res['id'].'">'.$res['name'].'</a></td>';
+			echo '<td class="tab-selected"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=type&amp;id='.$res['id'].'">'.$res['name'].'</a></td>';
 		else 
-			echo '<td class="tab"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=category&amp;id='.$res['id'].'">'.$res['name'].'</a></td>';
+			echo '<td class="tab"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=type&amp;id='.$res['id'].'">'.$res['name'].'</a></td>';
 	}
 }
 if ($active == 3)
