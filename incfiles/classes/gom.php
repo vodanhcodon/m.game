@@ -122,6 +122,28 @@ class Gom {
         return $list;
     }
 
+    /**
+     * getTheLoai lấy về danh sách tất cả các thể loại
+     * @return array
+     */
+    public function getTheLoai() {
+        $query = '
+            SELECT `TheLoai`.`id`, `TheLoai`.`name`, 
+            `TheLoai`.`description`, `TheLoai`.`order`, 
+            `TheLoai`.`forum_link`, `TheLoai`.`created_date`, 
+            `TheLoai`.`last_update`, `TheLoai`.`status`, `TheLoai`.`danh_muc_id` 
+            FROM `gom`.`gom_the_loai` AS `TheLoai` 
+            WHERE 1 = 1 
+            AND `TheLoai`.`status` = 2
+            ORDER BY `TheLoai`.`order` ASC 
+            ';
+        $find_the_loai = $this->pdo->query($query);
+        $find_the_loai->setFetchMode(PDO::FETCH_ASSOC);
+        $theloai = $find_the_loai->fetchAll();
+        return $theloai;
+    }
+    
+
     private function db_connect() {
         require(self::$root . 'incfiles/db.php');
         $db_host = isset($db_host) ? $db_host : 'localhost';
