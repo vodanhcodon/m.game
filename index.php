@@ -14,6 +14,7 @@ define('_IN_JOHNCMS', 1);
 $headmod = 'mainpage';
 $rootpath = ''; 
 require('incfiles/core.php');
+require('incfiles/vendor/Pager/Pager.php');
 require('incfiles/head.php');
 
 if (isset($_SESSION['ref']))
