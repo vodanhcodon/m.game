@@ -67,86 +67,113 @@
 
 
             {% block content %}
-
-            {% endblock %}
-            {% block search_advance %}
+                        {% for key, value in page_data %}
                         <tr>
-                            <td colspan="2">
-                                <form method="get" action="http://localhost/Gom-wapsite/gamestore/index.php?src=&amp;act=advanced">
-                                    <table width="100%">
-                                        <tr>
-                                            <td colspan="2">
-                                                <span style="font-size: medium; color:red; font-weight: bold;">
-                                                    Tìm kiếm
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tên game</td>
-                                            <td>
-                                                <input type="hidden" name="act" id="act" value="advanced"/>
-                                                <input type="text" name="advanced_name" id="advanced_name" value="" style="width: 88%; border: 2px solid #F79646;"/></td>
-                                        </tr>
+                            <td width="30%">
+                                <a href="http://localhost/Gom-wapsite/">
+                                    <img src="http://localhost/Gom-wapsite/images/Yahoo smile/Koala_1364060015.jpg"/>
+                                </a>
+                            </td>
+                            <td width="70%" valign="top">{{ value.name }}<br/>
+                                {% if  value.price and value.price != 0 %}
+                                    Giá: {{ value.price | default('0') }} đồng<br/>
+                                {% else %}
+                                    {% if value.download_link %}
+                                    <a href="{{ value.download_link }}" title="Tải miễn phí">Tải miễn phí</a><br/>
+                                    {% else %}
+                                    <a href="#" title="Không hỗ trợ">Không hỗ trợ</a><br/>
+                                    {% endif %}
+                                {% endif %}
+                                {{ value.short_decription }}<br/>
+                                {{ value.decription }}<br/>
+                                    <div class="chitiet">
+                                        <a href="http://localhost/Gom-wapsite/">Chi tiết</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+            {% endblock %}
+                            <tr><td colspan="2">{{ links.all | raw }}</td></tr>
+            {% block search_advance %}
+                                <tr>
+                                    <td colspan="2">
+                                        <form method="get" action="http://localhost/Gom-wapsite/gamestore/index.php?src=&amp;act=advanced">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <span style="font-size: medium; color:red; font-weight: bold;">
+                                                            Tìm kiếm
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tên game</td>
+                                                    <td>
+                                                        <input type="hidden" name="act" id="act" value="advanced"/>
+                                                        <input type="text" name="advanced_name" id="advanced_name" value="" style="width: 88%; border: 2px solid #F79646;"/></td>
+                                                </tr>
                                                                 {% block danhmuc %}
 
 
-                                        <tr>
-                                            <td>Danh mục</td>
-                                            <td>
-                                                <select name="advanced_cate" id="advanced_cate" style="width: 90%; border: 2px solid #F79646;">
-                                                   {% for key, value in danhmucs %}
+                                                <tr>
+                                                    <td>Danh mục</td>
+                                                    <td>
+                                                        <select name="advanced_cate" id="advanced_cate" style="width: 90%; border: 2px solid #F79646;">
+                                                   {% for key, value in danh_muc %}
 
-                                                        <option value="{{ key }}">{{ value }}</option>
+                                                                <option value="{{ key }}">{{ value }}</option>
                                                   {% endfor %}
-                                                    </select>
-                                                </td>
-                                            </tr>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
 
                                                                 {% endblock %}
-                                            <tr>
-                                                <td>Thể loại</td>
-                                                <td>
-                                                    <select name="advanced_type" id="advanced_type" style="width: 90%; border: 2px solid #F79646;">
-                                                        <option>Tất cả</option>
-                                                        <option>Webgame</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>
-                                                    <input type="submit" value="Tìm kiếm" id="search" name="search" class="button"/>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </form>
-                                </td>
-                            </tr>
+                                                    <tr>
+                                                        <td>Thể loại</td>
+                                                        <td>
+                                                            <select name="advanced_type" id="advanced_type" style="width: 90%; border: 2px solid #F79646;">
+                                                                  {% for key, value in the_loai %}
+
+                                                                    <option value="{{ key }}">{{ value }}</option>
+                                                                  {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>
+                                                                <input type="submit" value="Tìm kiếm" id="search" name="search" class="button"/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </form>
+                                            </td>
+                                        </tr>
                  {%  endblock %}
                         {% block jumplink %}
-                            <tr>
-                                <td colspan="2"><hr/></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><table width="100%">
                                         <tr>
-                                            <td align="center"><a href="#" style="">Top hot</a></td>
-                                            <td align="center"><a href="#">Top tải</a></td>
-                                            <td align="center"><a href="#">Sự kiện hot</a></td>
-                                            <td align="center"><a href="#">Diễn đàn</a></td>
+                                            <td colspan="2"><hr/></td>
                                         </tr>
-                                    </table></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><hr/></td>
-                            </tr>
+                                        <tr>
+                                            <td colspan="2"><table width="100%">
+                                                    <tr>
+                                                        <td align="center"><a href="#" style="">Top hot</a></td>
+                                                        <td align="center"><a href="#">Top tải</a></td>
+                                                        <td align="center"><a href="#">Sự kiện hot</a></td>
+                                                        <td align="center"><a href="#">Diễn đàn</a></td>
+                                                    </tr>
+                                                </table></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><hr/></td>
+                                        </tr>
                         {% endblock %}
                         {% block footer %}
-                            <tr bgcolor="#D9D9D9">
-                                <td colspan="2" style="font-size: small; text-align: center"><span style="color:red; font-weight: bold;">&copy; Copyright 2013 Vteen.vn</span></td>
-                            </tr>
+                                        <tr bgcolor="#D9D9D9">
+                                            <td colspan="2" style="font-size: small; text-align: center"><span style="color:red; font-weight: bold;">&copy; Copyright 2013 Vteen.vn</span></td>
+                                        </tr>
                         {% endblock %}
-                        </table>
+                                    </table>
 {% endblock %}
-                    </body>
-                </html>
+                                </body>
+                            </html>
