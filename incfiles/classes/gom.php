@@ -7,8 +7,9 @@ class Gom {
     public $pdo;
     public static $root = '../';
 
-    public function __construct() {
-        $this->db_connect();
+    public function __construct($pdo) {
+//        $this->db_connect();
+        $this->pdo = $pdo;
     }
 
     /**
