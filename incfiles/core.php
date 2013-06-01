@@ -62,6 +62,9 @@ $deviceInfo = core::getDeviceInfo();
 
 // lấy về đối tượng template: $twig object
 $twig = core::getTwig();
+
+// lấy về đối tượng memcache
+$memcache = core::memCache();
 /*
   -----------------------------------------------------------------
   kết thúc đoạn tích hợp
