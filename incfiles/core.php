@@ -63,8 +63,12 @@ $deviceInfo = core::getDeviceInfo();
 // lấy về đối tượng template: $twig object
 $twig = core::getTwig();
 
+// khởi tạo đối tượng Gom - xử lý nghiệp vụ cho Gom system
+$gom = new Gom($pdo) or die('Error: Gom System');
+
 // lấy về đối tượng memcache
-$memcache = core::memCache();
+//$memcache = core::memCache();
+//$memCached = core::memCached();
 /*
   -----------------------------------------------------------------
   kết thúc đoạn tích hợp
