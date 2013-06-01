@@ -563,4 +563,16 @@ class core {
         return $twig;
     }
 
+    /**
+      -----------------------------------------------------------------
+      khởi tạo đối tượng Memcache object, dùng để caching lại kết quả lấy từ database
+      -----------------------------------------------------------------
+     */
+    public static function memCache() {
+        require(self::$root . 'incfiles/memcache.php');
+        $memcache = new Memcache;
+        $memcache->connect($mem_host, $mem_port) or die("Không thể kết nối tới memcached server");
+        return $memcache;
+    }
+
 }
