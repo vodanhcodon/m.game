@@ -123,8 +123,7 @@ class core {
         // khởi tạo và gán đối tượng PDO dùng để kết nối Database vào trong thuộc tính self::$pdo
         // dựa vào các thông số cài đặt trong db.php
         try {
-            self::$pdo = new PDO('mysql:host=' . $db_host . ';dbname=' . $db_name . ';charset=UTF-8', $db_user, $db_pass, 
-                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+            self::$pdo = new PDO('mysql:host=' . $db_host . ';dbname=' . $db_name . ';charset=UTF-8', $db_user, $db_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
             );
         } catch (Exception $exc) {
             echo $exc->getMessage();
@@ -521,7 +520,10 @@ class core {
         $teraWURFL = new TeraWurfl();
         if ($teraWURFL->getDeviceCapabilitiesFromAgent($user_agent)) {
             // xác định tên model của thiết bị, để thực hiện tìm kiếm trong device_support
-            $deviceModel = $teraWURFL->getDeviceCapability("model_name");
+//            $brandName = $teraWURFL->getDeviceCapability("brand_name");
+            $modelName = $teraWURFL->getDeviceCapability("model_name");
+//            $deviceModel = $brandName . ' ' . $modelName;
+            $deviceModel = $modelName;
             // xác định thiết bị có hỗ trợ j2me hay không
             $j2meSupport = $teraWURFL->getDeviceCapability("j2me_midp_1_0");
             // xác định hệ điều hành của thiết bị
