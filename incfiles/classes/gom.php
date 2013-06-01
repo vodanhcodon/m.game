@@ -53,11 +53,17 @@ class Gom {
             WHERE 1 = 1 AND DanhMuc.status = 2
             ';
         if (!empty($type)) {
-            $query .= 'AND DanhMuc.type = ' . $type;
+            if (!is_array($type)) {
+                $query .= 'AND DanhMuc.type = ?';
+            } else {
+                $inQuery = implode(',', array_fill(0, count($type), '?'));
+                $query .= 'AND DanhMuc.type IN (' . $inQuery . ') ';
+            }
         }
         $query .= ' ORDER BY DanhMuc.order ASC ';
 
-        $find_danh_muc = $this->pdo->query($query);
+        $find_danh_muc = $this->pdo->prepare($query);
+        $find_danh_muc->execute($type);
         $find_danh_muc->setFetchMode(PDO::FETCH_ASSOC);
         $danhmuc = $find_danh_muc->fetchAll();
 
@@ -140,9 +146,62 @@ class Gom {
         $find_the_loai = $this->pdo->query($query);
         $find_the_loai->setFetchMode(PDO::FETCH_ASSOC);
         $theloai = $find_the_loai->fetchAll();
-        return $theloai;
+        $list_the_loai = array();
+        foreach ($theloai as $v) {
+            $list_the_loai[$v['id']] = $v['name'];
+        }
+        return $list_the_loai;
     }
-    
+
+    public function getGameApp($model_name = NULL) {
+        $query = '
+                      SELECT
+                        `GameApp`.`id`,
+                        `GameApp`.`type`,
+                        `GameApp`.`platform`,
+                        `GameApp`.`danh_muc_id`,
+                        `GameApp`.`company_id`,
+                        `GameApp`.`cms_user_id`,
+                        `GameApp`.`name`,
+                        `GameApp`.`short_decription`,
+                        `GameApp`.`description`,
+                        `GameApp`.`device_support`,
+                        `GameApp`.`logo`,
+                        `GameApp`.`image_path_1`,
+                        `GameApp`.`image_path_2`,
+                        `GameApp`.`image_path_3`,
+                        `GameApp`.`price`,
+                        `GameApp`.`forum_link`,
+                        `GameApp`.`status`,
+                        `GameApp`.`version`,
+                        `GameApp`.`j2me_jar_file_path`,
+                        `GameApp`.`j2me_jad_file_path`,
+                        `GameApp`.`android_apk_file_path`,
+                        `GameApp`.`android_store_id`,
+                        `GameApp`.`windows_store_id`,
+                        `GameApp`.`iphone_store_id`,
+                        `GameApp`.`total_download`,
+                        `GameApp`.`created_date`,
+                        `GameApp`.`last_update`,
+                        `GameApp`.`order`,
+                        `GameApp`.`distributor_id`
+                    FROM
+                        `gom`.`gom_game_app` AS `GameApp`
+                    WHERE
+                        1 = 1';
+        if (!empty($model_name)) {
+            $query .= ' 
+                    AND LOWER(`GameApp`.`device_support`) LIKE "%' . $model_name . '%"';
+        }
+        $query .= '
+                    ORDER BY
+                        `GameApp`.`order` ASC
+            ';
+        $find_game_app = $this->pdo->query($query);
+        $find_game_app->setFetchMode(PDO::FETCH_ASSOC);
+        $game_app = $find_game_app->fetchAll();
+        return $game_app;
+    }
 
     private function db_connect() {
         require(self::$root . 'incfiles/db.php');
