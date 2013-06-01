@@ -58,7 +58,6 @@ echo '<tr><td colspan="2"><form method="get" action="'.$set['homeurl'].'/gamesto
 		'<table width="100%"><tr><td colspan="2"><span style="font-size: medium; color:red; font-weight: bold;" >Tìm kiếm</span></td></tr>' .
 		'<tr><td>Tên game</td><td><input type="hidden" name="act" id="act" value="advanced" /><input type="text" name="advanced_name" id="advanced_name" value="'.$advanced_name.'" style="width: 88%; border: 2px solid #F79646;" /></td></tr>';
 
-$gom = new Gom();
 $trees_game = $gom->getTreeDanhMuc(array(1, 3));
 $danh_muc = $gom->buildOptsDanhMuc($trees_game);
 array_unshift($danh_muc, 'Tất cả');
@@ -71,17 +70,17 @@ foreach ($danh_muc as $key => $value) {
 	}
 }
 echo '</select></td></tr>';
-// $the_loai = $gom->getTheLoai();
-// array_unshift($the_loai, 'Tất cả');
-// echo '<tr><td>Thể loại</td>';
-// echo '<td><select name="advanced_theloai" id="advanced_theloai" style="width: 90%; border: 2px solid #F79646;">';
-// foreach ($the_loai as $key => $value) {
-// 	if($key == $advanced_theloai) 
-// 		echo '<option value="'.$key.'" selected="selected">'.$value.'</option>';
-// 	else 
-// 		echo '<option value="'.$key.'">'.$value.'</option>';
-// }
-// echo '</select></td></tr>';
+ $the_loai = $gom->getTheLoai();
+ array_unshift($the_loai, 'Tất cả');
+ echo '<tr><td>Thể loại</td>';
+ echo '<td><select name="advanced_theloai" id="advanced_theloai" style="width: 90%; border: 2px solid #F79646;">';
+ foreach ($the_loai as $key => $value) {
+ 	if($key == $advanced_theloai) 
+ 		echo '<option value="'.$key.'" selected="selected">'.$value.'</option>';
+ 	else 
+ 		echo '<option value="'.$key.'">'.$value.'</option>';
+ }
+ echo '</select></td></tr>';
 // $lst_danhmuc = mysql_query("SELECT `a`.`id`, `a`.`name` FROM `gom_danh_muc` as `a` ORDER BY `a`.`order`");
 // echo '<tr><td>Danh mục</td><td><select name="advanced_danhmuc" id="advanced_danhmuc" style="width: 90%; border: 2px solid #F79646;">';
 // echo '<option value="">Tất cả</option>';
