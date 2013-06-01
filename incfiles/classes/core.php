@@ -574,5 +574,12 @@ class core {
         $memcache->connect($mem_host, $mem_port) or die("Không thể kết nối tới memcached server");
         return $memcache;
     }
+    
+    public static function memCached() {
+        require(self::$root . 'incfiles/memcache.php');
+        $memcached = new Memcached;
+        $memcached->addServer($mem_host, $mem_port) or die("Không thể kết nối tới memcached server");
+        return $memcached;
+    }
 
 }
