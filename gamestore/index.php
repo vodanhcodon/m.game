@@ -526,7 +526,7 @@ switch($act){
 							echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_app_top5['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res_app_top5['logo'] . '" /></a></td>';
 							echo '<td width="70%" valign="top">' . $res_app_top5['name'] . '<br />' . $res_app_top5['j2me_jad_file_path'] . '<br />' . $res_app_top5['id'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_app_top5['id'].'">Chi tiết</a></div></td></tr>';
 						} else {
-							echo '<tr><td colspan="2" valign="top">' . $res_app_top5['name'] . '<br />' . $res_app_top5['j2me_jad_file_path'] . '<br />' . $res_app_top5['short_decription'] . '</td></tr>';
+							echo '<tr><td colspan="2" valign="top">' . $res_app_top5['name'] . '<br />' . $res_app_top5['j2me_jad_file_path'] . '<br />' . $res_app_top5['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_app_top5['id'].'">Chi tiết</a></div></td></tr>';
 						}
 						echo '<tr><td colspan="2"><hr /></td></tr>';
 					}
@@ -562,7 +562,7 @@ switch($act){
 							echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res_game_app_top9['logo'] . '" /></a></td>';
 							echo '<td width="70%" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'">Chi tiết</a></div></td></tr>';
 						} else {
-							echo '<tr><td colspan="2" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '</td></tr>';
+							echo '<tr><td colspan="2" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'">Chi tiết</a></div></td></tr>';
 						}
 						echo '<tr><td colspan="2"><hr /></td></tr>';
 					}
@@ -615,7 +615,7 @@ switch($act){
 							echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res_game_app_top9['logo'] . '" /></a></td>';
 							echo '<td width="70%" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'">Chi tiết</a></div></td></tr>';
 						} else {
-							echo '<tr><td colspan="2" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '</td></tr>';
+							echo '<tr><td colspan="2" valign="top">' . $res_game_app_top9['name'] . '<br />' . $res_game_app_top9['j2me_jad_file_path'] . '<br />' . $res_game_app_top9['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_game_app_top9['id'].'">Chi tiết</a></div></td></tr>';
 						}
 						echo '<tr><td colspan="2"><hr /></td></tr>';
 					}
@@ -661,7 +661,7 @@ switch($act){
 					echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res['logo'] . '" /></a></td>';
 					echo '<td width="70%" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
 				} else {
-					echo '<tr><td colspan="2" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '</td></tr>';
+					echo '<tr><td colspan="2" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
 				}
 				echo '<tr><td colspan="2"><hr /></td></tr>';
 			}
@@ -720,7 +720,7 @@ switch($act){
 					echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res['logo'] . '" /></a></td>';
 					echo '<td width="70%" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
 				} else {
-					echo '<tr><td colspan="2" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '</td></tr>';
+					echo '<tr><td colspan="2" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
 				}
 				echo '<tr><td colspan="2"><hr /></td></tr>';
 			}
@@ -762,7 +762,7 @@ switch($act){
 					echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'"><img src="' . $set['homeurl'] . '/images/' . $res_game_app_top9['logo'] . '" /></a></td>';
 					echo '<td width="70%" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
 				} else {
-					echo '<tr><td colspan="2" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '</td></tr>';
+					echo '<tr><td colspan="2" valign="top">' . $res['name'] . '<br />' . $res['j2me_jad_file_path'] . '<br />' . $res['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
 				}
 				echo '<tr><td colspan="2"><hr /></td></tr>';
 			}
@@ -782,7 +782,116 @@ switch($act){
 		echo '</td></tr>';
 		echo '<tr><td colspan="2"><hr /></td></tr>';
 		break;
-	default: echo '<tr><td colspan="2">No match action</td></tr>';
+	case 'topevent':
+		//max displayed per page
+		$per_page = 9;
+		// count records
+		$count_record = mysql_num_rows(mysql_query("SELECT `a`.`id` FROM `gom_game_event` as `a` ORDER BY  `a`.`last_update` DESC"));
+		// count max pages
+		$max_pages = ceil($count_record / $per_page);
+		// current page
+		if(isset($_GET['page']))
+			$current_page = $_GET['page'];
+		else
+			$current_page = 1;
+		echo '<tr><td colspan="2" class="danhmuc">Danh sách sự kiện game</td></tr>';
+		$lst_result = mysql_query("SELECT `a`.`id`, `a`.`name`, `a`.`short_decription`, `a`.`last_update`
+										FROM `gom_game_event` as `a` ORDER BY  `a`.`last_update` DESC LIMIT ".$per_page*($current_page-1).", ".$per_page);
+		if (mysql_num_rows($lst_result)) {
+			while (($res = mysql_fetch_assoc($lst_result)) !== false) {
+				echo '<tr><td colspan="2" valign="top">' . $res['name'] .
+						 '<br /><span style="font-style: italic;">Ngày ' . date('d/m/Y', strtotime($res['last_update'])) . '</span>' .
+						 '<br />' . $res['short_decription'] . '<br />'.
+						 '<div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=eventdetail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
+				echo '<tr><td colspan="2"><hr /></td></tr>';
+			}
+		}
+		/*
+		 -----------------------------------------------------------------
+		Paging block
+		-----------------------------------------------------------------
+		*/
+		echo '<tr><td colspan="2">Đến trang';
+		for ($i=1; $i<=$max_pages; $i++) {
+			if ($current_page!=$i)
+				echo ' <a href="'.$set['homeurl'].'/gamestore/index.php?act=topevent&amp;page='.$i.'">'.$i.'</a> ';
+			else
+				echo " ".$i." " ;
+		}
+		echo '</td></tr>';
+		echo '<tr><td colspan="2"><hr /></td></tr>';
+		break;
+	case 'eventdetail':
+		// Hien thi chi tiet su kien game và game
+		$event_game = mysql_query("SELECT `a`.`name`, `a`.`event_forum_link`, `a`.`game_forum_link`, `a`.`last_update`, `a`.`description`, `a`.`game_app_id`,
+											`a`.`image_path_1`, `a`.`image_path_2`, `a`.`image_path_3`
+									 FROM `gom_game_event` as `a` WHERE `a`.`id`  = '" . $id . "'");
+		echo '<tr height="8px;"><td colspan="2"></td></tr>';
+		if (mysql_num_rows($event_game)) {
+			while (($res_event = mysql_fetch_assoc($event_game)) !== false) {
+				echo '<tr><td colspan="2" class="danhmuc">' . $res_event['name'] . '</td></tr>';
+				$game_app = mysql_query("SELECT `a`.`name`, `a`.`logo`, `a`.`j2me_jad_file_path`, `a`.`j2me_jar_file_path`,
+											 `a`.`total_download` FROM `gom_game_app` as `a` WHERE `a`.`id` = '".$res_event['game_app_id']."'");
+				if (mysql_num_rows($game_app)) {
+					while (($res_game = mysql_fetch_assoc($game_app)) !== false) {
+						echo '<tr height="8px;"><td colspan="2"></td></tr>';
+						echo '<tr><td width="30%"><img src="'.$set['homeurl'].'/gameapp_files/' . $res_game['name'] . '/' . $res_game['logo'] . '" /></td>';
+						echo '<td width="70%" valign="top">
+									<a href="' . $set['homeurl'] . '/gamestore/index.php?src='.$src.'&amp;act=download&amp;id=' . $res_game['j2me_jad_file_path'] . '">Tải miễn phí</a><br /><br />
+									' . $res_game['total_download'] . ' số lượt tải<br /><br />
+									<a href="#">Thiết bị hỗ trợ</a><br /><br /><a href="#">Xem ảnh giới thiệu game</a>
+									</td></tr>';
+					}
+				}
+				echo '<tr><td colspan="2" class="header-chitiet">Diễn đàn liên quan</td></tr>';
+				echo '<tr><td colspan="2">'.date('d/m/Y', strtotime($res_event['last_update'])).'</td></tr>';
+				if(isset($res_event['image_path_1']) && isset($res_event['image_path_2'])) {
+					echo '<tr><td colspan="2" align="center">'.
+							'<img src="'.$set['homeurl'].'/'.$res_event['image_path_1'].'" style="width:30px; height:30px;" alt="" />&nbsp;'.
+							'<img src="'.$set['homeurl'].'/'.$res_event['image_path_2'].'" style="width:30px; height:30px;" alt="" />&nbsp;'.
+							'<img src="'.$set['homeurl'].'/'.$res_event['image_path_3'].'" style="width:30px; height:30px;" alt="" />'.
+						'</td></tr>';
+				} else {
+					echo '<tr><td colspan="2" align="center"><img src="'.$set['homeurl'].'/'.$res_event['image_path_1'].'" alt="" /></td></tr>';
+				}
+				echo '<tr><td colspan="2">'.$res_event['description'].'</td></tr>';
+			}
+			echo '<tr height="8px;"><td colspan="2"></td></tr>';
+		}
+		
+		// Hien thi 5 su kien dang dien ra moi nhat
+		echo '<tr><td colspan="2" class="danhmuc">Sự kiện đang diễn ra</td></tr>';
+		$event_top5 = mysql_query("SELECT `a`.`id`, `a`.`name`, `a`.`short_decription`, `a`.`last_update`
+										FROM `gom_game_event` as `a` ORDER BY  `a`.`last_update` DESC LIMIT 5");
+		if (mysql_num_rows($event_top5)) {
+			while (($res = mysql_fetch_assoc($event_top5)) !== false) {
+				echo '<tr><td colspan="2" valign="top">' . $res['name'] .
+				'<br /><span style="font-style: italic;">Ngày ' . date('d/m/Y', strtotime($res['last_update'])) . '</span>' .
+				'<br />' . $res['short_decription'] . '<br />'.
+				'<div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=eventdetail&amp;id='.$res['id'].'">Chi tiết</a></div></td></tr>';
+				echo '<tr><td colspan="2"><hr /></td></tr>';
+			}
+		}
+		
+		// Hien thi 3 game dang hot nhat
+		echo '<tr><td colspan="2" class="danhmuc">Game hot có thể bạn quan tâm</td></tr>';
+		echo '<tr height="8px;"><td colspan="2"></td></tr>';
+		$lst_game_app_top3 = mysql_query("SELECT `a`.`id`, `a`.`logo`, `a`.`name`, `a`.`j2me_jad_file_path`,
+								       				`a`.`j2me_jar_file_path`, `a`.`android_apk_file_path`, `a`.`short_decription`
+												 FROM `gom_game_app` as `a` ORDER BY `a`.`total_download` DESC LIMIT 3");
+		while (($res_app = mysql_fetch_assoc($lst_game_app_top3)) !== false) {
+			if(isset($res_app['logo'])) {
+				echo '<tr><td width="30%"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_app['id'].'"><img src="'.$set['homeurl']. '/gameapp_files/' . $res_app['name'] . '/' . $res_app['logo'] . '" /></a></td>';
+				echo '<td width="70%" valign="top">' . $res_app['name'] . '<br />' . $res_app['j2me_jad_file_path'] . '<br />' . $res_app['short_decription'] . '<br /><div class="chitiet"><a href="'.$set['homeurl'].'/gamestore/index.php?src='.$src.'&amp;act=detail&amp;id='.$res_app['id'].'">Chi tiết</a></div></td></tr>';
+			} else {
+				echo '<tr><td colspan="2" valign="top">' . $res_app['name'] . '<br />' . $res_app['j2me_jad_file_path'] . '<br />' . $res_app['short_decription'] . '</td></tr>';
+			}
+			echo '<tr><td colspan="2"><hr /></td></tr>';
+		}
+		break;
+	default:
+		echo '<tr><td colspan="2">No match action</td></tr>';
+		break;
 }
 
 require('../incfiles/end.php');

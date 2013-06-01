@@ -19,14 +19,14 @@ $src = $_GET['src'];
 Game store
 -----------------------------------------------------------------
 */
-$lst_all_cate = mysql_query("SELECT `a`.`id` FROM `gom_danh_muc` AS `a` WHERE `a`.`parent_id` = -1 ORDER BY `a`.`order`");
+$lst_all_cate = mysql_query("SELECT `a`.`id` FROM `gom_danh_muc` AS `a` WHERE `a`.`parent_id` = 0 ORDER BY `a`.`order`");
 if (mysql_num_rows($lst_all_cate) == 1) {
 	
 } else {
 	//max displayed per page
 	$per_page = 3;
 	// count records
-	$count_record = mysql_num_rows(mysql_query("SELECT `a`.`id` FROM `gom_danh_muc` AS `a` WHERE `a`.`parent_id` = -1 ORDER BY `a`.`order`"));
+	$count_record = mysql_num_rows(mysql_query("SELECT `a`.`id` FROM `gom_danh_muc` AS `a` WHERE `a`.`parent_id` = 0 ORDER BY `a`.`order`"));
 	// count max pages
 	$max_pages = ceil($count_record / $per_page);
 	// current page
@@ -34,7 +34,7 @@ if (mysql_num_rows($lst_all_cate) == 1) {
 		$current_page = $_GET['page'];
 	else
 		$current_page = 1;
-	$str_sql = "SELECT `a`.`id`, `a`.`name` FROM `gom_danh_muc` AS `a` WHERE `a`.`parent_id` = -1 ORDER BY `a`.`order` LIMIT ".$per_page*($current_page-1).", ".$per_page;
+	$str_sql = "SELECT `a`.`id`, `a`.`name` FROM `gom_danh_muc` AS `a` WHERE `a`.`parent_id` = 0 ORDER BY `a`.`order` LIMIT ".$per_page*($current_page-1).", ".$per_page;
 	$lst_cate_top3 = mysql_query($str_sql);
 	if (mysql_num_rows($lst_cate_top3)) {
 		while (($res_cate = mysql_fetch_assoc($lst_cate_top3)) !== false) {

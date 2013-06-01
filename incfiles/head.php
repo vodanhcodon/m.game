@@ -126,7 +126,7 @@ switch ($act) {
 	case 'topdownload':
 		$active = 3;
 		break;
-	case 'eventhot':
+	case 'topevent':
 		$active = 4;
 		break;
 	default:
@@ -151,9 +151,9 @@ if ($active == 3)
 else
 	echo '<td class="tab"><a href="'.$set['homeurl'].'/gamestore/index.php?act=topdownload">Top tải</a></td>';
 if ($active == 4)
-	echo '<td class="tab-selected"><a href="#">Sự kiện hot</a></td>';
+	echo '<td class="tab-selected"><a href="'.$set['homeurl'].'/gamestore/index.php?act=topevent">Sự kiện hot</a></td>';
 else
-	echo '<td class="tab"><a href="#">Sự kiện hot</a></td>';
+	echo '<td class="tab"><a href="'.$set['homeurl'].'/gamestore/index.php?act=topevent">Sự kiện hot</a></td>';
 echo '</tr></table></div></td></tr>';
 
 /*
