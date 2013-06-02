@@ -43,9 +43,15 @@ if (mysql_num_rows($lst_all_cate) == 1) {
                 SELECT `a`.`id`, `a`.`logo`, `a`.`name`, `a`.`j2me_jad_file_path`, 
 			           `a`.`j2me_jar_file_path`, `a`.`android_apk_file_path`, `a`.`short_decription`
 		        FROM `gom_game_app` as `a`
-				WHERE `a`.`danh_muc_id` = '" . $res_cate['id'] . "' 
-                AND LOWER(`a`.`device_support`) LIKE '%" . $deviceInfo['deviceModel'] . "%' 
-                ORDER BY `a`.`last_update` LIMIT 9");
+				WHERE 
+                       `a`.`danh_muc_id` = '" . $res_cate['id'] . "' 
+                AND 
+                       `a`.status = 2 
+                AND
+                       LOWER(`a`.`device_support`) LIKE '%" . $deviceInfo['deviceModel'] . "%' 
+                ORDER BY 
+                       `a`.`last_update` LIMIT 9"
+            );
             $i = 0;
             while (($res_app = mysql_fetch_assoc($lst_game_app_top9)) !== false) {
                 if ($i < 3) {
