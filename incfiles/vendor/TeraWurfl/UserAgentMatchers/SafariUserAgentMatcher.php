@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,19 +20,38 @@
  * @package TeraWurflUserAgentMatchers
  */
 class SafariUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+
+	public $runtime_normalization = true;
+
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isMobileBrowser()) return false;
+		return $httpRequest->user_agent->contains('Safari') && $httpRequest->user_agent->startsWith(array('Mozilla/5.0 (Macintosh', 'Mozilla/5.0 (Windows'));
 	}
-	public function applyConclusiveMatch($ua) {
-		$tolerance = UserAgentUtils::firstSlash($ua);
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+
+	public function applyConclusiveMatch() {
+		$safari_version = self::getSafariVersion($this->userAgent);
+		if ($safari_version !== null) {
+			$prefix = 'Safari '.$safari_version.WurflConstants::RIS_DELIMITER;
+			$this->userAgent->set($prefix.$this->userAgent);
+			return $this->risMatch(strlen($prefix));
+		}
+
+		return WurflConstants::NO_MATCH;
 	}
-	public function recoveryMatch($ua){
-        $this->wurfl->toLog("Applying ".get_class($this)." recovery match ($ua)",LOG_INFO);
-        if(self::contains($ua,"Macintosh") || self::contains($ua,"Windows")){
-        	return WurflConstants::$GENERIC_WEB_BROWSER;
-        }
-        return WurflConstants::$GENERIC;
+
+	public function applyRecoveryMatch(){
+		if($this->userAgent->contains(array('Macintosh', 'Windows'))) {
+			return WurflConstants::GENERIC_WEB_BROWSER;
+		}
+		return WurflConstants::NO_MATCH;
+	}
+
+	public static function getSafariVersion($ua) {
+		$search = 'Version/';
+		$idx = strpos($ua, $search) + strlen($search);
+		if ($idx === false) return null;
+		$end_idx = strpos($ua, '.', $idx);
+		if ($end_idx === false) return null;
+		return substr($ua, $idx, $end_idx - $idx);
 	}
 }

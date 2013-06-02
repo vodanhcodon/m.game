@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_Admin
  * @copyright  ScientiaMobile, Inc.
@@ -46,21 +46,33 @@ if($db->connected === true){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Tera-WURFL Administration</title>
+<title>WURFL Administration</title>
 <link href="style.css" rel="stylesheet" type="text/css" /></head>
 
 <body>
 <table width="800">
 	<tr><td>
 <div align="center" class="titlediv">
-	<p>		Tera-WURFL <?php echo $tw->release_version; ?> Administration<br />
-		<span class="version">Loaded WURFL: <?php echo $tw->getSetting(TeraWurfl::$SETTING_WURFL_VERSION); ?></span></p>
+	<p>WURFL DB API <?php echo $tw->release_version; ?> Administration<br />
+		<span class="version">ScientiaMobile WURFL Database API <?php echo $tw->release_version; ?> (aka Tera-WURFL <?php echo $tw->historical_release_version; ?>)<br/>Loaded WURFL: <?php echo $tw->getSetting(TeraWurfl::$SETTING_WURFL_VERSION); ?></span></p>
 </div>
 <?php
 if(isset($_GET['msg']) && $_GET['severity']){
 	$severity = ($_GET['severity']=='notice')? 'noticediv': 'errordiv';
 ?>
-<div align="center" class="<?php echo $severity; ?>"><?php echo $_GET['msg']; ?></div>
+	<div class="<?php echo $severity; ?>">
+	<?php
+	echo $_GET['msg']; 
+	if (isset($_GET['sf404']) && $_GET['sf404'] == '1') {
+		?>
+		<br/><br/>
+		<strong>Important:</strong> The license of the WURFL Data has recently changed. ScientiaMobile has temporarily moved the WURFL download location to ensure that you 
+		are aware of the changes.  Please visit <a href="http://sourceforge.net/projects/wurfl/files/WURFL/" target="_blank">the WURFL Sourceforge page</a>, download the desired wurfl.xml and place it in the data/ directory, then run the 
+		update from local instead of remote.
+		<?php
+	}
+	?>
+	</div>
 <?php
 }
 ?>
@@ -78,17 +90,10 @@ if(isset($_GET['msg']) && $_GET['severity']){
 		</tr>
 		<tr>
 			<td class="darkrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td class="darkrow"><a href="updatedb.php?source=remote">Update database from wurfl.sourceforge.net</a><br />
+			<td class="darkrow"><a href="updatedb.php?source=remote">Update database from a remote repository</a><br />
 			<strong>Location</strong>: <?php echo TeraWurflConfig::$WURFL_DL_URL; ?><br />			Updates your WURFL database with the <strong>current stable release</strong> from the <a href="http://sourceforge.net/projects/wurfl/files/WURFL/">official WURFL download site</a>.<br />
 			<span class="error"><strong>WARNING: </strong>This will replace your existing wurfl.xml</span><br/></td>
 		</tr>
-		<!-- <tr>
-			<td class="lightrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td class="lightrow"><a href="updatedb.php?source=remote_cvs">Update database from wurfl.sourceforge.net CVS</a><br />
-			<strong>Location</strong>: <?php echo urldecode(htmlspecialchars(TeraWurflConfig::$WURFL_CVS_URL)); ?><br />
-			Updates your WURFL database with the <strong>current development release (CVS) </strong> from the <a href="http://wurfl.sourceforge.net">official WURFL website</a>.<br />
-			<span class="error"><strong>WARNING: </strong>This will replace your existing wurfl.xml</span>				</td>
-		</tr> -->
 		<tr>
 			<td class="lightrow"><img src="triangle.gif" width="10" height="11" /></td>
 			<td class="lightrow"><a href="updatedb.php?action=rebuildCache">Rebuild the device cache</a><br/>Rebuilds the cache table by running through all the devices in the existing cache table and redetecting them using the current WURFL data and re-caching them. This is automatically done when you update the WURFL, but you can manually rebuild it with this link.</td>
@@ -144,25 +149,16 @@ if(isset($_GET['msg']) && $_GET['severity']){
 		</tr>
 		<tr>
 			<td width="16" class="darkrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td width="744" class="darkrow"><a href="http://www.tera-wurfl.com/explore/">Tera-WURFL Explorer: explore the WURFL!</a></td>
+			<td width="744" class="darkrow"><a href="http://dbapi.scientiamobile.com/explore/">ScientiaMobile WURFL Explorer - explore the WURFL!</a></td>
 		</tr>
 		<tr>
 			<td class="lightrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td class="lightrow"><a href="http://www.tera-wurfl.com/wiki/index.php/Installation">Online Documentation</a></td>
+			<td class="lightrow"><a href="http://www.scientiamobile.com/">ScientiaMobile - Commercial WURFL APIs and Support</a></td>
 		</tr>
 		<tr>
 			<td class="darkrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td class="darkrow"><a href="http://groups.yahoo.com/group/wmlprogramming/">WML Programming Mailing List</a></td>
-		</tr>
-		<tr>
-			<td class="lightrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td class="lightrow"><a href="http://www.tera-wurfl.com">www.Tera-Wurfl.com</a></td>
-		</tr>
-		<tr>
-			<td class="darkrow"><img src="triangle.gif" width="10" height="11" /></td>
-			<td class="darkrow"><a href="http://www.stevekamerman.com">Steve Kamerman's Blog</a> (the author :D) </td>
-		</tr>
-        
+			<td class="darkrow"><a href="http://dbapi.scientiamobile.com/wiki/index.php/Installation">Online Documentation</a></td>
+		</tr>        
 	</table>
 	<br /><br />
 	</td>

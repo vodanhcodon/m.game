@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,22 +20,20 @@
  * @package TeraWurflUserAgentMatchers
  */
 class SonyEricssonUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->contains('Sony');
 	}
-	public function applyConclusiveMatch($ua) {
+	
+	public function applyConclusiveMatch() {
 		// firstSlash() - 1 because some UAs have revisions that aren't getting detected properly:
 		// SonyEricssonW995a/R1FA Browser/NetFront/3.4 Profile/MIDP-2.1 Configuration/CLDC-1.1 JavaPlatform/JP-8.4.3
-		$tolerance = UserAgentUtils::firstSlash($ua) - 1;
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		if(self::startsWith($ua,"SonyEricsson")){
-			return $this->risMatch($ua, $tolerance);
+		$tolerance = $this->userAgent->firstSlash() - 1;
+		if($this->userAgent->startsWith('SonyEricsson')){
+			return $this->risMatch($tolerance);
 		}
-		$tolerance = UserAgentUtils::secondSlash($ua);
-		return $this->risMatch($ua, $tolerance);
-	}
-	public function recoveryMatch($ua){
-		$tolerance = 14;
-		return $this->risMatch($ua, $tolerance);
+		$tolerance = $this->userAgent->secondSlash();
+		return $this->risMatch($tolerance);
 	}
 }

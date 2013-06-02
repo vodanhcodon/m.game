@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_XMLParser
  * @copyright  ScientiaMobile, Inc.
@@ -86,7 +86,7 @@ class TeraWurflXMLParser_SimpleXML extends TeraWurflXMLParser {
 		$filtering = (TeraWurflConfig::$CAPABILITY_FILTER)? true:false;
 		$includegroup = false;
 		if(isset($device['fall_back'])) $this->devices[$id]['fall_back'] = (string)$device['fall_back'];
-		if(isset($device['user_agent'])) $this->devices[$id]['user_agent'] = UserAgentUtils::cleanUserAgent((string)$device['user_agent']);
+		if(isset($device['user_agent'])) $this->devices[$id]['user_agent'] = TeraWurflUserAgent::cleanUserAgent((string)$device['user_agent']);
 		if(isset($device['actual_device_root'])){
 			$this->devices[$id]['actual_device_root'] = (string)$device['actual_device_root'];
 			$this->devices[$id]['actual_device_root'] = ($this->devices[$id]['actual_device_root'])?1:0;

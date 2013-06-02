@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -39,29 +39,32 @@ class BlackBerryUserAgentMatcher extends UserAgentMatcher {
 		'6.' => 'blackberry_generic_ver6',
 	);
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->iContains('blackberry');
 	}
-	public function applyConclusiveMatch($ua){
-		if(self::startsWith($ua,"BlackBerry;")){
-			$tolerance = UserAgentUtils::ordinalIndexOf($ua,';',3);
-		}else{
-			$tolerance = UserAgentUtils::firstSlash($ua);
+	
+	public function applyConclusiveMatch(){
+		if ($this->userAgent->startsWith('Mozilla/4')) {
+			$tolerance = $this->userAgent->secondSlash();
+		} else if ($this->userAgent->startsWith('Mozilla/5')) {
+			$tolerance = $this->userAgent->ordinalIndexOf(';', 3);
+		} else {
+			$tolerance = $this->userAgent->firstSlash();
 		}
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold  $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+		return $this->risMatch($tolerance);
 	}
-	public function recoveryMatch($ua){
+	
+	public function applyRecoveryMatch(){
 		// BlackBerry
-		$this->wurfl->toLog("Applying ".get_class($this)." recovery match ($ua)",LOG_INFO);
-		if(preg_match('#Black[Bb]erry[^/\s]+/(\d.\d)#',$ua,$matches)){
+		if (preg_match('#Black[Bb]erry[^/\s]+/(\d.\d)#', $this->userAgent, $matches)) {
 			$version = $matches[1];
-			foreach(self::$constantIDs as $vercode => $deviceID){
-				if(strpos($version,$vercode) !== false){
+			foreach (self::$constantIDs as $vercode => $deviceID) {
+				if (strpos($version, $vercode) !== false) {
 					return $deviceID;
 				}
 			}
 		}
-		return WurflConstants::$GENERIC;
+		return WurflConstants::NO_MATCH;
 	}
 }

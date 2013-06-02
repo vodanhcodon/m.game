@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -21,27 +21,29 @@
  */
 class NintendoUserAgentMatcher extends UserAgentMatcher {
 	
-	public static $constantIDs = array("nintendo_wii_browser","nintendo_dsi_ver1","nintendo_ds_ver1");
+	public static $constantIDs = array(
+		'nintendo_wii_ver1',
+		'nintendo_dsi_ver1',
+		'nintendo_ds_ver1',
+	);
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		if ($httpRequest->user_agent->contains('Nintendo')) return true;
+		// Nintendo DS: Mozilla/4.0 (compatible; MSIE 6.0; Nitro) Opera 8.50 [en]
+		return ($httpRequest->user_agent->startsWith('Mozilla/') && $httpRequest->user_agent->contains('Nitro') && $httpRequest->user_agent->contains('Opera'));
 	}
-	public function applyConclusiveMatch($ua) {
-		$deviceId = '';
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: LD",LOG_INFO);
-		$deviceId = $this->ldMatch($ua);
-		return $deviceId;
+	
+	public function applyConclusiveMatch() {
+		return $this->ldMatch();
 	}
-	public function recoveryMatch($ua){
-		if(self::contains($ua,"Nintendo Wii")){
-			return "nintendo_wii_browser";
+	
+	public function applyRecoveryMatch(){
+		if ($this->userAgent->contains('Nintendo Wii')) return 'nintendo_wii_ver1';
+		if ($this->userAgent->contains('Nintendo DSi')) return 'nintendo_dsi_ver1';
+		if (($this->userAgent->startsWith('Mozilla/') && $this->userAgent->contains('Nitro') && $this->userAgent->contains('Opera'))) {
+			return 'nintendo_ds_ver1';
 		}
-		if(self::contains($ua,"Nintendo DSi")){
-			return "nintendo_dsi_ver1";
-		}
-		if((self::startsWith($ua,'Mozilla/') && self::contains($ua,"Nitro") && self::contains($ua,"Opera"))){
-			return "nintendo_ds_ver1";
-		}
-		return "nintendo_wii_browser";
+		return 'nintendo_wii_ver1';
 	}
 }

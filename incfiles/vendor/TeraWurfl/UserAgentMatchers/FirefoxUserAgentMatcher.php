@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -21,35 +21,23 @@
  */
 class FirefoxUserAgentMatcher extends UserAgentMatcher {
 	
-	public static $constantIDs = array("firefox_1","firefox_1_5","firefox_2","firefox_3","firefox_3_5");
+	public $runtime_normalization = true;
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static $constantIDs = array(
+		'firefox',
+	);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isMobileBrowser()) return false;
+		return ($httpRequest->user_agent->contains('Firefox') && !$httpRequest->user_agent->contains(array('Tablet', 'Sony', 'Novarra', 'Opera')));
 	}
-	public function applyConclusiveMatch($ua) {
-		$matches = array();
-		if(preg_match('/Firefox\/(\d)\.(\d)/',$ua,$matches)){
-			if(TeraWurflConfig::$SIMPLE_DESKTOP_ENGINE_ENABLE){
-				return WurflConstants::$GENERIC_WEB_BROWSER;
-			}
-			switch($matches[1]){
-				// cases are intentionally out of sequnce for performance
-				case 3:
-					return ($matches[2]==5)? 'firefox_3_5': 'firefox_3';
-					break;
-				case 2:
-					return 'firefox_2';
-					break;
-				case 1:
-					return ($matches[2]==5)? 'firefox_1_5': 'firefox_1';
-					break;
-				default:
-					//return 'firefox';
-					break;
-			}
-		}
-		$tolerance = 5;
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: LD with threshold $tolerance",LOG_INFO);
-		return $this->ldMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		$this->userAgent->set(substr($this->userAgent, $this->userAgent->indexOf('Firefox')));
+		return $this->risMatch($this->userAgent->indexOf('.'));
+	}
+	
+	public function applyRecoveryMatch() {
+		return 'firefox';
 	}
 }

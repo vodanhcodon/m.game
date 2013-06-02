@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_Database
  * @copyright  ScientiaMobile, Inc.
@@ -57,8 +57,8 @@ class TeraWurflDatabase_MSSQL2005 extends TeraWurflDatabase{
 		return unserialize($data['capabilities']);
 	}
 	public function getActualDeviceAncestor($wurflID){
-		if($wurflID == "" || $wurflID == WurflConstants::$GENERIC)
-			return WurflConstants::$GENERIC;
+		if($wurflID == "" || $wurflID == WurflConstants::NO_MATCH)
+			return WurflConstants::NO_MATCH;
 		$device = $this->getDeviceFromID($wurflID);
 		if($device['actual_device_root']){
 			return $device['id'];
@@ -100,12 +100,11 @@ class TeraWurflDatabase_MSSQL2005 extends TeraWurflDatabase{
 		$result = sqlsrv_query($this->dbcon,$query);
 		if(!$result){
 			throw new Exception(sprintf("Error in DB RIS Query: %s. \nQuery: %s\n",$this->lastDBError(),$query));
-			exit();
 		}
 		$data = sqlsrv_fetch_array($result);
 		sqlsrv_free_stmt($result);
 		$wurflid = $data['DeviceID'];
-		return ($wurflid == 'NULL' || is_null($wurflid))? WurflConstants::$GENERIC: $wurflid;
+		return ($wurflid == 'NULL' || is_null($wurflid))? WurflConstants::NO_MATCH: $wurflid;
 	}
 	// TODO: Implement with Stored Proc
 	public function getDeviceFromUA_LD($userAgent,$tolerance,UserAgentMatcher &$matcher){
@@ -178,7 +177,7 @@ class TeraWurflDatabase_MSSQL2005 extends TeraWurflDatabase{
 	/**
 	 * Drops and creates the given device table
 	 *
-	 * @param string Table name (ex: TeraWurflConfig::$HYBRID)
+	 * @param string $tablename Table name (ex: TeraWurflConfig::$HYBRID)
 	 * @return boolean success
 	 */
 	public function createGenericDeviceTable($tablename){
@@ -211,7 +210,7 @@ CREATE NONCLUSTERED INDEX [IDX_{$tablename}_match] ON [dbo].[{$tablename}] ([mat
 	 * @return boolean success
 	 */
 	protected function clearMatcherTables(){
-		foreach(UserAgentFactory::$matchers as $matcher){
+		foreach(WurflConstants::$matchers as $matcher){
 			$table = TeraWurflConfig::$TABLE_PREFIX."_".$matcher;
 			$this->createGenericDeviceTable($table);
 		}
@@ -220,7 +219,7 @@ CREATE NONCLUSTERED INDEX [IDX_{$tablename}_match] ON [dbo].[{$tablename}] ([mat
 	/**
 	 * Drops and creates the MERGE table
 	 *
-	 * @param array Table names
+	 * @param array $tables Table names
 	 * @return boolean success
 	 */
 	public function createMergeTable($tables){
@@ -425,9 +424,7 @@ END";
 		sqlsrv_query($this->dbcon,$TeraWurfl_EscapeForLike);
 		return true;
 	}
-	/**
-	 * Establishes connection to database (does not check for DB sanity)
-	 */
+    
 	public function connect(){
 		$this->numQueries++;
 		$connectionInfo = array(
@@ -467,7 +464,7 @@ END";
 	// prep raw text for use in queries (adding quotes if necessary)
 	public function SQLPrep($value){
 		if($value == '') $value = 'NULL';
-		else if (!is_numeric($value) || $value[0] == '0') $value = "'" . str_replace("'","''",$value) . "'"; //Quote if not integer
+		else if (!TeraWurflDatabase::isNumericSafe($value) || $value[0] == '0') $value = "'" . str_replace("'","''",$value) . "'"; //Quote if not integer
 		return $value;
 	}
 	protected function SQLEscapeForLike($value){
@@ -526,11 +523,11 @@ END";
 		sqlsrv_query($this->dbcon,$query);
 		return true;
 	}
-	//TODO: MSSQL
 	public function getTableStats($table){
 		$stats = array();
 		$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns where TABLE_CATALOG = '".TeraWurflConfig::$DB_SCHEMA."' AND TABLE_NAME = '$table'";
 		$fieldsres = sqlsrv_query($this->dbcon,$query);
+        $fieldnames = array();
 		while($row = sqlsrv_fetch_array($fieldsres)){
 			$fieldnames[]=$row['COLUMN_NAME'];
 		}
@@ -566,5 +563,12 @@ END";
 		sqlsrv_free_stmt($res);
 		preg_match('/^([^)]+\))/',$row['server_version'],$matches);
 		return $matches[1];
+	}
+	/**
+	 * Returns true if the required extensions for this database connector are loaded
+	 * @return boolean
+	 */
+	public static function extensionLoaded() {
+		return function_exists('sqlsrv_connect');
 	}
 }

@@ -49,6 +49,7 @@ $set = core::$system_set;                                 // Системные 
 $lng = core::$lng;                                        // Фразы языка
 $is_mobile = core::$is_mobile;                            // Определение мобильного браузера
 $home = $set['homeurl'];                                  // Домашняя страница
+$admin = $set['adminurl'];                                // thiết lập đường dẫn tới trang admin
 /*
   -----------------------------------------------------------------
   Tích hợp vào nhân core PDO, Cách nhận biết thiết bị, Twig templates

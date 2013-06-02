@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,17 +20,16 @@
  * @package TeraWurflUserAgentMatchers
  */
 class NecUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->startsWith(array('NEC-', 'KGT'));
 	}
-	public function applyConclusiveMatch($ua) {
-		if(self::startsWith($ua,"NEC")){
-			$tolerance = UserAgentUtils::firstSlash($ua);
-			$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-			return $this->risMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		if ($this->userAgent->startsWith('NEC')) {
+			return $this->risMatch($this->userAgent->firstSlash());
 		}
-		$tolerance = 2;
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: Nec",LOG_INFO);
-		return $this->ldMatch($ua,$tolerance);
+		return $this->ldMatch(2);
 	}
 }

@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -21,26 +21,26 @@
  */
 class MotorolaUserAgentMatcher extends UserAgentMatcher {
 	
-	public static $constantIDs = array("mot_mib22_generic");
+	public static $constantIDs = array(
+		'mot_mib22_generic',
+	);
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return ($httpRequest->user_agent->startsWith(array('Mot-', 'MOT-', 'MOTO', 'moto')) ||
+				$httpRequest->user_agent->contains('Motorola'));
 	}
-	public function applyConclusiveMatch($ua) {
-		$tolerance = 5;
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		if(self::startsWith($ua,"Mot-") || self::startsWith($ua,"MOT-") || self::startsWith($ua,"Motorola")) {
-			$deviceId = $this->risMatch($ua, $tolerance);
-			return $deviceId;
+	
+	public function applyConclusiveMatch() {
+		if ($this->userAgent->startsWith(array('Mot-', 'MOT-', 'Motorola'))) {
+			return $this->risMatch($this->userAgent->firstSlash());
 		}
-		$deviceId = $this->ldMatch($ua,$tolerance);
-		return $deviceId;
+		return $this->ldMatch(5);
 	}
-	public function recoveryMatch($ua){
-		$this->wurfl->toLog("Applying ".get_class($this)." Recovery Match",LOG_INFO);
-		if(self::contains($ua,"MIB/2.2") || self::contains($ua,"MIB/BER2.2")){
-			return "mot_mib22_generic";
+	public function applyRecoveryMatch(){
+		if ($this->userAgent->contains(array('MIB/2.2', 'MIB/BER2.2'))) {
+			return 'mot_mib22_generic';
 		}
-		return WurflConstants::$GENERIC;
+		return WurflConstants::NO_MATCH;
 	}
 }

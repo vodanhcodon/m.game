@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,29 +20,31 @@
  * @package TeraWurflUserAgentMatchers
  */
 class SamsungUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return ($httpRequest->user_agent->iContains('samsung') ||
+				$httpRequest->user_agent->startsWith(array('SEC-', 'SPH', 'SGH', 'SCH')));
 	}
-	public function applyConclusiveMatch($ua) {
-		if(self::startsWith($ua,array("SAMSUNG-","SEC-","SCH"))){
-			$tolerance = UserAgentUtils::firstSlash($ua);
-			$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold (first slash) $tolerance",LOG_INFO);
-		}elseif(self::startsWith($ua,"Samsung") || self::startsWith($ua,"SPH") || self::startsWith($ua,"SGH")){
-			$tolerance = UserAgentUtils::firstSpace($ua);
-			$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold (first space) $tolerance",LOG_INFO);
-		}else{
-			$tolerance = UserAgentUtils::secondSlash($ua);
-			$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold (second slash) $tolerance",LOG_INFO);
+	
+	public function applyConclusiveMatch() {
+		if ($this->userAgent->startsWith(array('SAMSUNG-', 'SEC-', 'SCH'))) {
+			$tolerance = $this->userAgent->firstSlash();
+		} elseif ($this->userAgent->startsWith(array('Samsung', 'SPH', 'SGH'))) {
+			$tolerance = $this->userAgent->firstSpace();
+		} else {
+			$tolerance = $this->userAgent->secondSlash();
 		}
-		return $this->risMatch($ua, $tolerance);
+		return $this->risMatch($tolerance);
 	}
-	public function recoveryMatch($ua){
-		if(self::startsWith($ua,"SAMSUNG")){
+	
+	public function applyRecoveryMatch() {
+		if ($this->userAgent->startsWith('SAMSUNG')) {
 			$tolerance = 8;
-			return $this->ldMatch($ua,$tolerance);
-		}else{
-			$tolerance = UserAgentUtils::indexOfOrLength($ua,'/',strpos($ua,'Samsung'));
-			return $this->risMatch($ua, $tolerance);
+			return $this->ldMatch($tolerance);
+		} else {
+			$tolerance = $this->userAgent->indexOfOrLength('/', $this->userAgent->indexOf('Samsung'));
+			return $this->risMatch($tolerance);
 		}
 	}
 }

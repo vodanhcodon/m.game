@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_RemoteClient
  * @copyright  ScientiaMobile, Inc.
@@ -86,16 +86,15 @@ class TeraWurflRemoteClient {
 	 * Creates a TeraWurflRemoteClient object.  NOTE: in Tera-WURFL 2.1.2 the default data format is JSON.
 	 * This format is not supported in Tera-WURFL 2.1.1 or earlier, so if you must use this client with 
 	 * an earlier version of the server, set the second parameter to TeraWurflRemoteClient::$FORMAT_XML
-	 * @param String URL to the master Tera-WURFL Server's webservice.php
-	 * @param String TeraWurflRemoteClient::$FORMAT_JSON or TeraWurflRemoteClient::$FORMAT_XML
-	 * @param int Timeout in seconds
-	 * @param String HTTP Call Method (TeraWurflRemoteClient::$METHOD_URL_WRAPPER or TeraWurflRemoteClient::$METHOD_CURL)
+	 * @param String $TeraWurflWebserviceURL URL to the master Tera-WURFL Server's webservice.php
+	 * @param String $data_format TeraWurflRemoteClient::$FORMAT_JSON or TeraWurflRemoteClient::$FORMAT_XML
+	 * @param int $timeout Timeout in seconds
+	 * @param String $method HTTP Call Method (TeraWurflRemoteClient::$METHOD_URL_WRAPPER or TeraWurflRemoteClient::$METHOD_CURL)
 	 */
 	public function __construct($TeraWurflWebserviceURL,$data_format='json',$timeout=1,$method='urlwrap'){
 		$this->format = $data_format;
 		if(!self::validURL($TeraWurflWebserviceURL)){
 			throw new Exception("TeraWurflRemoteClient Error: the specified webservice URL is invalid.  Please make sure you pass the full url to Tera-WURFL's webservice.php.");
-			exit(1);
 		}
 		$this->capabilities = array();
 		$this->errors = array();
@@ -105,8 +104,8 @@ class TeraWurflRemoteClient {
 	}
 	/**
 	 * Get the requested capabilities from Tera-WURFL for the given user agent
-	 * @param String HTTP User Agent of the device being detected
-	 * @param Array Array of capabilities that you would like to retrieve
+	 * @param String $userAgent HTTP User Agent of the device being detected
+	 * @param Array $capabilities Array of capabilities that you would like to retrieve
 	 * @return bool Success
 	 */
 	public function getDeviceCapabilitiesFromAgent($userAgent, Array $capabilities){
@@ -124,8 +123,8 @@ class TeraWurflRemoteClient {
 	/**
 	 * Maintains backwards compatibility with Tera-WURFL <= 2.1.2.  This function is an
 	 * alias for TeraWurflRemoteClient::getDeviceCapabilitiesFromAgent()
-	 * @param String HTTP User Agent of the device being detected
-	 * @param Array Array of capabilities that you would like to retrieve
+	 * @param String $userAgent HTTP User Agent of the device being detected
+	 * @param Array $capabilities Array of capabilities that you would like to retrieve
 	 * @return bool Success
 	 */
 	public function getCapabilitiesFromAgent($userAgent, Array $capabilities){
@@ -133,7 +132,7 @@ class TeraWurflRemoteClient {
 	}
 	/**
 	 * Returns the value of the requested capability
-	 * @param String The WURFL capability you are looking for (e.g. "is_wireless_device")
+	 * @param String $capability The WURFL capability you are looking for (e.g. "is_wireless_device")
 	 * @return Mixed String, Numeric, Bool
 	 */
 	public function getDeviceCapability($capability){
@@ -173,7 +172,7 @@ class TeraWurflRemoteClient {
 	}
 	/**
 	 * Make the webservice call to the server using the GET method and load the response.
-	 * @param String The URI of the master server's webservice.php
+	 * @param String $uri The URI of the master server's webservice.php
 	 * @return void
 	 */
 	protected function callTeraWurfl($uri){
@@ -210,12 +209,12 @@ class TeraWurflRemoteClient {
 		}catch(Exception $ex){
 			// Can't use builtin logging here through Tera-WURFL since it is on the client, not the server
 			throw new Exception("TeraWurflRemoteClient Error: Could not query Tera-WURFL master server.");
-			exit(1);
 		}
 	}
 	/**
 	 * Makes the HTTP call to the remote Tera-WURFL Server using PHP URL Wrappers 
-	 * @param String URL
+	 * @param String $uri URL
+     * @return string data
 	 */
 	protected function loadURL_URLWrapper($uri){
 		$context_options = array(
@@ -231,7 +230,8 @@ class TeraWurflRemoteClient {
 	}
 	/**
 	 * Makes the HTTP call to the remote Tera-WURFL Server using the PHP cURL Extension
-	 * @param String URL
+	 * @param String $uri URL
+     * @return string
 	 */
 	protected function loadURL_cURL($uri){
 		$ch = curl_init();
@@ -286,8 +286,8 @@ class TeraWurflRemoteClient {
 	}
 	/**
 	 * Cast strings into proper variable types, i.e. 'true' into true
-	 * @param $value
-	 * @return Mixed String, Bool, Float
+	 * @param string $value
+	 * @return String|Bool|Float
 	 */
 	protected static function niceCast($value){
 		// Clean Boolean values
@@ -302,7 +302,7 @@ class TeraWurflRemoteClient {
 	}
 	/**
 	 * Is the given URL valid
-	 * @param $url
+	 * @param string $url
 	 * @return Bool
 	 */
 	protected static function validURL($url){
@@ -311,7 +311,7 @@ class TeraWurflRemoteClient {
 	}	
 	/**
 	 * Return the requesting client's User Agent
-	 * @param $source
+	 * @param string $source
 	 * @return String
 	 */
 	public static function getUserAgent($source=null){

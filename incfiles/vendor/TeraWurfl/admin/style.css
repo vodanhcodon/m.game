@@ -4,18 +4,20 @@
 	font-size: 24px;
 	color: #000;
 }
-.noticediv {
-	background-color: #9CA6E0;
+.noticediv, .errordiv {
 	border: 3px solid #333333;
 	font-size: 14px;
 	color: #000;
+	padding: 5px;
+}
+.noticediv {
+	background-color: #9CA6E0;
+	
 }
 .errordiv {
 	background-color: #FF7E7E;
-	border: 3px solid #333333;
-	font-size: 14px;
-	color: #000;
 }
+
 .logfile {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 11px;

@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL
  * @copyright  ScientiaMobile, Inc.
@@ -20,6 +20,6 @@ require_once realpath(dirname(__FILE__).'/TeraWurfl.php');
 // Instantiate the Tera-WURFL object
 $wurflObj = new TeraWurfl();
 // Get the capabilities from the object
-$wurflObj->GetDeviceCapabilitiesFromAgent(); //optionally pass the UA and HTTP_ACCEPT here
+$wurflObj->getDeviceCapabilitiesFromRequest();
 // Print the capabilities array
 echo "<pre>".htmlspecialchars(var_export($wurflObj->capabilities,true))."</pre>";

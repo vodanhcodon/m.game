@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+        <title>WebService</title>
+        <script>
+            $(document).ready(function(e) {
+                var getCategory = 'http://localhost/gom/WebService/getCategory/';
+                var getTheLoai = 'http://localhost/gom/WebService/getTheLoai/';
+                var getNews = 'http://localhost/gom/WebService/getNews/';
+                var getGomEvent = 'http://localhost/gom/WebService/getGomEvent/';
+                var getItem = 'http://localhost/gom/WebService/getItem/';
+                var downloadGomItem = 'http://localhost/gom/WebService/downloadGomItem/';
+                var getSubCategory = 'http://localhost/gom/WebService/getSubCategory/';
+                var getGame = 'http://localhost/gom/WebService/getGame/';
+
+                $('#getCategoryGame').on('click', function() {
+                    $.get(getCategory, {type: 1, page: 1, number_per_page: 5}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getCategoryApp').on('click', function() {
+                    $.get(getCategory, {type: 3, page: 1, number_per_page: 5}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getCategoryNews').on('click', function() {
+                    $.get(getCategory, {type: 2, page: 1, number_per_page: 5}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getCategoryProduct').on('click', function() {
+                    $.get(getCategory, {type: 6, page: 1, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+
+
+                $('#getTheLoaiGame').on('click', function() {
+                    $.get(getTheLoai, {type: 1, page: 1, danh_muc_id: 1, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getTheLoaiApp').on('click', function() {
+                    $.get(getTheLoai, {type: 3, page: 1, danh_muc_id: 8, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getTheLoaiNews').on('click', function() {
+                    $.get(getTheLoai, {type: 2, page: 1, danh_muc_id: 1, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+
+                $('#getGomEventAll').on('click', function() {
+                    $.get(getGomEvent, {type: 1, page: 1, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getGomEventGameID').on('click', function() {
+                    $.get(getGomEvent, {type: 1, page: 1, number_per_page: 20, game_id: 13}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getGomEventDistrubutorID').on('click', function() {
+                    $.get(getGomEvent, {type: 1, page: 1, number_per_page: 20, distributor_id: 2}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+
+                $('#getNewsAll').on('click', function() {
+                    $.get(getNews, {page: 1, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getNewsProduct').on('click', function() {
+                    $.get(getNews, {page: 1, danh_muc_id: 2, number_per_page: 20, the_loai_id: 2, product_distribution_id: 1}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+
+                $('#downloadGomItem').on('click', function() {
+                    $.get(downloadGomItem, {type: 1, id: 19}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+
+                $('#getSubCategoryGame').on('click', function() {
+                    $.get(getSubCategory, {type: 1, page: 1, number_per_page: 20, danh_muc_id: 1}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getSubCategoryNews').on('click', function() {
+                    $.get(getSubCategory, {type: 2, page: 1, number_per_page: 20, danh_muc_id: 10}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+                $('#getGameAll').on('click', function() {
+                    $.get(getGame, {page: 1, number_per_page: 20}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getGameDanhMuc').on('click', function() {
+                    $.get(getGame, {page: 1, number_per_page: 20, danh_muc_id: 2}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+                $('#getGameTheLoai').on('click', function() {
+                    $.get(getGame, {page: 1, number_per_page: 20, the_loai_id: 2}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+
+                $('#getItem').on('click', function() {
+                    $.get(getItem, {type: 2, page: 1, number_per_page: 20, danh_muc_id: 2, the_loai_id: 2, distributor_id: 1, product_id: 1}, function(data) {
+                        console.log(data);
+                        json2String(data);
+                    }, 'json');
+                });
+            });
+
+            function json2String(json) {
+                $('textarea').text(JSON.stringify(json));
+            }
+        </script>
+    </head>
+
+    <body>
+        <div style="float: left">
+            <button id="getCategoryGame">getCategory-Game</button>
+            <br/>
+            <button id="getCategoryApp">getCategory-App</button>
+            <br/>
+            <button id="getCategoryNews">getCategory-News</button>
+            <br/>
+            <button id="getCategoryProduct">getCategory-Products</button>
+            <br/>
+
+            <button id="getTheLoaiGame">getTheLoai-Game</button>
+            <br/>
+            <button id="getTheLoaiApp">getTheLoai-App</button>
+            <br/>
+            <button id="getTheLoaiNews">getTheLoai-News</button>
+            <br/>
+
+            <button id="getGomEventAll">getGomEvent-All</button>
+            <br/>
+            <button id="getGomEventGameID">getGomEvent-GameID</button>
+            <br/>
+            <button id="getGomEventDistrubutorID">getGomEvent-DistrubutorID</button>
+            <br/>
+
+            <button id="getNewsAll">getNews-All</button>
+            <br/>
+            <button id="getNewsProduct">getNews-Product</button>
+            <br/>
+
+            <button id="downloadGomItem">downloadGomItem</button>
+            <br/>
+
+            <button id="getSubCategoryGame">getSubCategory-Game</button>
+            <br/>
+            <button id="getSubCategoryNews">getSubCategory-News</button>
+            <br/>
+
+            <button id="getGameAll">getGame-All</button>
+            <br/>
+            <button id="getGameDanhMuc">getGame-DanhMuc</button>
+            <br/>
+            <button id="getGameTheLoai">getGame-TheLoai</button>
+            <br/>
+        </div>
+        <fieldset style="float: right; width: 50%;height: 300px;">
+            <legend>Json Object</legend>
+            <textarea style="width: 100%;height: 280px;">
+            </textarea>
+        </fieldset>
+
+
+        <!--        <button id="getItem">getItem</button>
+                <br/>-->
+    </body>
+</html>

@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL
  * @copyright  ScientiaMobile, Inc.
@@ -32,8 +32,7 @@ class TeraWurflDeviceImage {
 	
 	/**
 	 * Creates a new TeraWurflDeviceImage
-	 * @param TeraWurfl The instance of TeraWurfl (or TeraWurflRemoteClient) that detected the device
-	 * @return void
+	 * @param TeraWurfl $wurfl The instance of TeraWurfl (or TeraWurflRemoteClient) that detected the device
 	 */
 	public function __construct(&$wurfl){
 		$this->wurfl = $wurfl;
@@ -44,16 +43,14 @@ class TeraWurflDeviceImage {
 	/**
 	 * Sets the base URL of the device images
 	 * Must end with "/".
-	 * @param string Web-accessible location of the device images  (e.g. "http://domain.com/device_pix/" or "../device_pix/")
-	 * @return void
+	 * @param string $baseURL Web-accessible location of the device images  (e.g. "http://domain.com/device_pix/" or "../device_pix/")
 	 */
 	public function setBaseURL($baseURL){
 		$this->baseURL = $baseURL;
 	}
 	/**
 	 * Sets the local directoy of the device images on the filesystem
-	 * @param string Local filesystem directory where the device images are located (e.g. "C:/device_pix/" or "../../device_pix/")
-	 * @return void
+	 * @param string $dir Local filesystem directory where the device images are located (e.g. "C:/device_pix/" or "../../device_pix/")
 	 */
 	public function setImagesDirectory($dir){
 		$this->imagesDirectory = $dir;
@@ -70,15 +67,13 @@ class TeraWurflDeviceImage {
 	/**
 	 * Set to false to prevent the image searching function from looking through the device's parent devices to find 
 	 * a very similar device image if the exact device image is not found.    
-	 * @param bool false prevents using the device image from a different version of the device
-	 * @return void
+	 * @param bool $descend false prevents using the device image from a different version of the device
 	 */
 	public function setDescendToFindImage($descend){
 		$this->descend = (bool)$descend;
 	}
 	/**
 	 * Sets the internal $this->image var with the complete path to the device image
-	 * @return void
 	 */
 	protected function setImage(){
 		if($this->deviceID === false){
@@ -90,10 +85,8 @@ class TeraWurflDeviceImage {
 			if(!$realpath){
 				if($this->imagesDirectory[0]=='.'){
 					throw new Exception("Error: the local images directory was specified as a relative path ($this->imagesDirectory), but could not be resolved.  Current directory: ".getcwd());
-					exit(1);
 				}else{
 					throw new Exception("Error: the local images directory specified does not exist: ".$this->imagesDirectory);
-					exit(1);
 				}
 			}
 		}
@@ -114,12 +107,17 @@ class TeraWurflDeviceImage {
 	}
 	/**
 	 * Check if a device image exists for the given deviceID
-	 * @param string Device ID (WURFL ID)
+	 * @param string $deviceID Device ID (WURFL ID)
 	 * @return bool Device image exists
 	 */
 	protected function imageExists($deviceID){
 		return file_exists(realpath($this->imagesDirectory) . DIRECTORY_SEPARATOR . $deviceID . $this->imageExt);
 	}
+    /**
+     * Returns device image filename
+     * @return string
+     * @see getImage()
+     */
 	public function __toString(){
 		return $this->getImage();
 	}

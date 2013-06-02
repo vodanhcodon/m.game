@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -21,21 +21,25 @@
  */
 class NokiaUserAgentMatcher extends UserAgentMatcher {
 	
-	public static $constantIDs = array("nokia_generic_series60","nokia_generic_series80");
+	public static $constantIDs = array(
+		'nokia_generic_series60',
+		'nokia_generic_series80',
+		'nokia_generic_meego',
+	);
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->contains('Nokia');
 	}
-	public function applyConclusiveMatch($ua) {
-		$tolerance = UserAgentUtils::indexOfOrLength($ua,array('/',' '),strpos($ua,'Nokia'));
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		$tolerance = $this->userAgent->indexOfOrLength(array('/', ' '), $this->userAgent->indexOf('Nokia'));
+		return $this->risMatch($tolerance);
 	}
-	public function recoveryMatch($ua){
-		if(self::contains($ua,"Series60"))
-			return "nokia_generic_series60";
-		if(self::contains($ua,"Series80"))
-			return "nokia_generic_series80";
-		return WurflConstants::$GENERIC;
+	public function applyRecoveryMatch() {
+		if ($this->userAgent->contains('Series60')) return 'nokia_generic_series60';
+		if ($this->userAgent->contains('Series80')) return 'nokia_generic_series80';
+		if ($this->userAgent->contains('MeeGo')) return 'nokia_generic_meego';
+		return WurflConstants::NO_MATCH;
 	}
 }

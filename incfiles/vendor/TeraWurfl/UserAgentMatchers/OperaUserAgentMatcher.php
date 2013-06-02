@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -21,26 +21,54 @@
  */
 class OperaUserAgentMatcher extends UserAgentMatcher {
 	
-	public static $constantIDs = array("opera","opera_7","opera_8","opera_9","opera_10");
+	public $runtime_normalization = true;
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static $constantIDs = array(
+		'opera',
+		'opera_7',
+		'opera_8',
+		'opera_9',
+		'opera_10',
+		'opera_11',
+		'opera_12',
+	);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isMobileBrowser()) return false;
+		return $httpRequest->user_agent->contains('Opera');
 	}
-	public function applyConclusiveMatch($ua) {
-	if(UserAgentUtils::checkIfContains($ua,"Opera/10")){
-			return "opera_10";
-		}elseif(UserAgentUtils::checkIfContains($ua,"Opera/9")){
-			return "opera_9";
-		}elseif(UserAgentUtils::checkIfContains($ua,"Opera/8")){
-			return "opera_8";
-		}elseif(UserAgentUtils::checkIfContains($ua,"Opera/7")){
-			return "opera_7";
+	
+	/**
+	 * @var string Opera version is stored here for performance
+	 */
+	protected $opera_version;
+	public function applyConclusiveMatch() {
+		// Repair Opera user agents using fake version 9.80
+		// Normalize: Opera/9.80 (X11; Linux x86_64; U; sv) Presto/2.9.168 Version/11.50
+		// Into:      Opera/11.50 (X11; Linux x86_64; U; sv) Presto/2.9.168 Version/11.50
+		if ($this->userAgent->startsWith('Opera/9.80')) {
+			if (preg_match('#Version/(\d+\.\d+)#', $this->userAgent, $matches)) {
+				$this->userAgent->set(str_replace('Opera/9.80', 'Opera/'.$matches[1], $this->userAgent));
+				$this->opera_version = $matches[1];
+			}
+			// Match to the '.' in the Opera version number
+			return $this->risMatch($this->userAgent->indexOf('.'));
 		}
-		$tolerance = 5;
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: LD with threshold $tolerance",LOG_INFO);
-		return $this->ldMatch($ua, $tolerance);
+		$opera_idx = $this->userAgent->indexOf('Opera');
+		$tolerance = $this->userAgent->indexOfOrLength('.', $opera_idx);
+		return $this->risMatch($tolerance);
 	}
-	public function recoveryMatch($ua){
-			return "opera";
+	public function applyRecoveryMatch() {
+		if ($this->opera_version === null) {
+			if (preg_match('#Opera[ /]?(\d+\.\d+)#', $this->userAgent, $matches)) {
+				$this->opera_version = $matches[1];
+			} else {
+				return 'opera';
+			}
+		}
+		$major_version = floor($this->opera_version);
+		$id = 'opera_' . $major_version;
+		if (in_array($id, self::$constantIDs)) return $id;
+		return 'opera';
 	}
 }

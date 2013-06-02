@@ -22,22 +22,29 @@ array_unshift($danh_muc, 'Tất cả');
  * BEGIN
  */
 $game_app = array();
+
 if ($deviceInfo) {
     $model_name = $deviceInfo['deviceModel'];
-    $game_app = $gom->getGameApp($model_name);
+    $mem_key = 'GameApp' . $model_name;
+    if ($memCached->get($mem_key)) {
+        $game_app = $memCached->get($mem_key);
+    } else {
+        $game_app = $gom->getGameApp($model_name);
 
-    // lấy về download_link dựa vào nền tảng mà thiết bị hỗ trợ
-    // nếu thiết bị hỗ trợ j2me, thì trả về download_link là path tới jar file
-    if ($deviceInfo['j2meSupport']) {
-        foreach ($game_app as $key => $value) {
-            $game_app[$key]['download_link'] = $value['j2me_jar_file_path'];
+        // lấy về download_link dựa vào nền tảng mà thiết bị hỗ trợ
+        // nếu thiết bị hỗ trợ j2me, thì trả về download_link là path tới jar file
+        if ($deviceInfo['j2meSupport']) {
+            foreach ($game_app as $key => $value) {
+                $game_app[$key]['download_link'] = $value['j2me_jar_file_path'];
+            }
         }
-    }
-    // nếu thiết bị có OS là android, thì trả về download_link là path tới apk file
-    elseif ($deviceInfo['deviceOS'] == 'android') {
-        foreach ($game_app as $key => $value) {
-            $game_app[$key]['download_link'] = $value['android_apk_file_path'];
+        // nếu thiết bị có OS là android, thì trả về download_link là path tới apk file
+        elseif ($deviceInfo['deviceOS'] == 'android') {
+            foreach ($game_app as $key => $value) {
+                $game_app[$key]['download_link'] = $value['android_apk_file_path'];
+            }
         }
+        $memCached->set($mem_key, $game_app, MEMCACHE_COMPRESSED, 1200);
     }
 }
 /**

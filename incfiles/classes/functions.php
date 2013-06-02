@@ -8,24 +8,22 @@
  * @version     VERSION.txt (see attached file)
  * @author      http://johncms.com/about
  */
-
 defined('_IN_JOHNCMS') or die('Restricted access');
 
-class functions extends core
-{
+class functions extends core {
     /*
-    -----------------------------------------------------------------
-    Антифлуд
-    -----------------------------------------------------------------
-    Режимы работы:
-    1 - Адаптивный
-    2 - День / Ночь
-    3 - День
-    4 - Ночь
-    -----------------------------------------------------------------
-    */
-    public static function antiflood()
-    {
+      -----------------------------------------------------------------
+      Антифлуд
+      -----------------------------------------------------------------
+      Режимы работы:
+      1 - Адаптивный
+      2 - День / Ночь
+      3 - День
+      4 - Ночь
+      -----------------------------------------------------------------
+     */
+
+    public static function antiflood() {
         $default = array(
             'mode' => 2,
             'day' => 10,
@@ -63,12 +61,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Маскировка ссылок в тексте
-    -----------------------------------------------------------------
-    */
-    public static function antilink($var)
-    {
+      -----------------------------------------------------------------
+      Маскировка ссылок в тексте
+      -----------------------------------------------------------------
+     */
+
+    public static function antilink($var) {
         $var = preg_replace('~\\[url=(https?://.+?)\\](.+?)\\[/url\\]|(https?://(www.)?[0-9a-z\.-]+\.[0-9a-z]{2,6}[0-9a-zA-Z/\?\.\~&amp;_=/%-:#]*)~', '###', $var);
         $replace = array(
             '.ru' => '***',
@@ -88,48 +86,48 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Проверка переменных
-    -----------------------------------------------------------------
-    */
-    public static function check($str)
-    {
+      -----------------------------------------------------------------
+      Проверка переменных
+      -----------------------------------------------------------------
+     */
+
+    public static function check($str) {
         $str = htmlentities(trim($str), ENT_QUOTES, 'UTF-8');
         $str = nl2br($str);
         $str = strtr($str, array(
-                                chr(0) => '',
-                                chr(1) => '',
-                                chr(2) => '',
-                                chr(3) => '',
-                                chr(4) => '',
-                                chr(5) => '',
-                                chr(6) => '',
-                                chr(7) => '',
-                                chr(8) => '',
-                                chr(9) => '',
-                                chr(10) => '',
-                                chr(11) => '',
-                                chr(12) => '',
-                                chr(13) => '',
-                                chr(14) => '',
-                                chr(15) => '',
-                                chr(16) => '',
-                                chr(17) => '',
-                                chr(18) => '',
-                                chr(19) => '',
-                                chr(20) => '',
-                                chr(21) => '',
-                                chr(22) => '',
-                                chr(23) => '',
-                                chr(24) => '',
-                                chr(25) => '',
-                                chr(26) => '',
-                                chr(27) => '',
-                                chr(28) => '',
-                                chr(29) => '',
-                                chr(30) => '',
-                                chr(31) => ''
-                           ));
+            chr(0) => '',
+            chr(1) => '',
+            chr(2) => '',
+            chr(3) => '',
+            chr(4) => '',
+            chr(5) => '',
+            chr(6) => '',
+            chr(7) => '',
+            chr(8) => '',
+            chr(9) => '',
+            chr(10) => '',
+            chr(11) => '',
+            chr(12) => '',
+            chr(13) => '',
+            chr(14) => '',
+            chr(15) => '',
+            chr(16) => '',
+            chr(17) => '',
+            chr(18) => '',
+            chr(19) => '',
+            chr(20) => '',
+            chr(21) => '',
+            chr(22) => '',
+            chr(23) => '',
+            chr(24) => '',
+            chr(25) => '',
+            chr(26) => '',
+            chr(27) => '',
+            chr(28) => '',
+            chr(29) => '',
+            chr(30) => '',
+            chr(31) => ''
+        ));
         $str = str_replace("'", "&#39;", $str);
         $str = str_replace('\\', "&#92;", $str);
         $str = str_replace("|", "I", $str);
@@ -140,17 +138,17 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Обработка текстов перед выводом на экран
-    -----------------------------------------------------------------
-    $br=1           обработка переносов строк
-    $br=2           подстановка пробела, вместо переноса
-    $tags=1         обработка тэгов
-    $tags=2         вырезание тэгов
-    -----------------------------------------------------------------
-    */
-    public static function checkout($str, $br = 0, $tags = 0)
-    {
+      -----------------------------------------------------------------
+      Обработка текстов перед выводом на экран
+      -----------------------------------------------------------------
+      $br=1           обработка переносов строк
+      $br=2           подстановка пробела, вместо переноса
+      $tags=1         обработка тэгов
+      $tags=2         вырезание тэгов
+      -----------------------------------------------------------------
+     */
+
+    public static function checkout($str, $br = 0, $tags = 0) {
         $str = htmlentities(trim($str), ENT_QUOTES, 'UTF-8');
         if ($br == 1)
             $str = nl2br($str);
@@ -197,18 +195,18 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Показ различных счетчиков внизу страницы
-    -----------------------------------------------------------------
-    */
-    public static function display_counters()
-    {
+      -----------------------------------------------------------------
+      Показ различных счетчиков внизу страницы
+      -----------------------------------------------------------------
+     */
+
+    public static function display_counters() {
         global $headmod;
         $req = mysql_query("SELECT * FROM `cms_counters` WHERE `switch` = '1' ORDER BY `sort` ASC");
         if (mysql_num_rows($req) > 0) {
-            while (($res = mysql_fetch_array($req)) !== false) {
-                $link1 = ($res['mode'] == 1 || $res['mode'] == 2) ? $res['link1'] : $res['link2'];
-                $link2 = $res['mode'] == 2 ? $res['link1'] : $res['link2'];
+            while (($row = mysql_fetch_array($req)) !== false) {
+                $link1 = ($row['mode'] == 1 || $row['mode'] == 2) ? $row['link1'] : $row['link2'];
+                $link2 = $row['mode'] == 2 ? $row['link1'] : $row['link2'];
                 $count = ($headmod == 'mainpage') ? $link1 : $link2;
                 if (!empty($count))
                     echo $count;
@@ -217,12 +215,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Показываем дату с учетом сдвига времени
-    -----------------------------------------------------------------
-    */
-    public static function display_date($var)
-    {
+      -----------------------------------------------------------------
+      Показываем дату с учетом сдвига времени
+      -----------------------------------------------------------------
+     */
+
+    public static function display_date($var) {
         $shift = (self::$system_set['timeshift'] + self::$user_set['timeshift']) * 3600;
         if (date('Y', $var) == date('Y', time())) {
             if (date('z', $var + $shift) == date('z', time() + $shift))
@@ -234,47 +232,47 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Сообщения об ошибках
-    -----------------------------------------------------------------
-    */
-    public static function display_error($error = NULL, $link = NULL)
-    {
+      -----------------------------------------------------------------
+      Сообщения об ошибках
+      -----------------------------------------------------------------
+     */
+
+    public static function display_error($error = NULL, $link = NULL) {
         if (!empty($error)) {
             return '<div class="rmenu"><p><b>' . self::$lng['error'] . '!</b><br />' .
-                   (is_array($error) ? implode('<br />', $error) : $error) . '</p>' .
-                   (!empty($link) ? '<p>' . $link . '</p>' : '') . '</div>';
+                    (is_array($error) ? implode('<br />', $error) : $error) . '</p>' .
+                    (!empty($link) ? '<p>' . $link . '</p>' : '') . '</div>';
         } else {
             return false;
         }
     }
 
     /*
-    -----------------------------------------------------------------
-    Отображение различных меню
-    -----------------------------------------------------------------
-    $delimiter - разделитель между пунктами
-    $end_space - выводится в конце
-    -----------------------------------------------------------------
-    */
-    public static function display_menu($val = array(), $delimiter = ' | ', $end_space = '')
-    {
+      -----------------------------------------------------------------
+      Отображение различных меню
+      -----------------------------------------------------------------
+      $delimiter - разделитель между пунктами
+      $end_space - выводится в конце
+      -----------------------------------------------------------------
+     */
+
+    public static function display_menu($val = array(), $delimiter = ' | ', $end_space = '') {
         return implode($delimiter, array_diff($val, array(''))) . $end_space;
     }
 
     /*
-    -----------------------------------------------------------------
-    Постраничная навигация
-    За основу взята аналогичная функция от форума SMF2.0
-    -----------------------------------------------------------------
-    */
-    public static function display_pagination($base_url, $start, $max_value, $num_per_page)
-    {
+      -----------------------------------------------------------------
+      Постраничная навигация
+      За основу взята аналогичная функция от форума SMF2.0
+      -----------------------------------------------------------------
+     */
+
+    public static function display_pagination($base_url, $start, $max_value, $num_per_page) {
         $neighbors = 2;
         if ($start >= $max_value)
-            $start = max(0, (int)$max_value - (((int)$max_value % (int)$num_per_page) == 0 ? $num_per_page : ((int)$max_value % (int)$num_per_page)));
+            $start = max(0, (int) $max_value - (((int) $max_value % (int) $num_per_page) == 0 ? $num_per_page : ((int) $max_value % (int) $num_per_page)));
         else
-            $start = max(0, (int)$start - ((int)$start % (int)$num_per_page));
+            $start = max(0, (int) $start - ((int) $start % (int) $num_per_page));
         $base_link = '<a class="pagenav" href="' . strtr($base_url, array('%' => '%%')) . 'page=%d' . '">%s</a>';
         $out[] = $start == 0 ? '' : sprintf($base_link, $start / $num_per_page, '&lt;&lt;');
         if ($start > $num_per_page * $neighbors)
@@ -287,7 +285,7 @@ class functions extends core
                 $out[] = sprintf($base_link, $tmpStart / $num_per_page + 1, $tmpStart / $num_per_page + 1);
             }
         $out[] = '<span class="currentpage"><b>' . ($start / $num_per_page + 1) . '</b></span>';
-        $tmpMaxPages = (int)(($max_value - 1) / $num_per_page) * $num_per_page;
+        $tmpMaxPages = (int) (($max_value - 1) / $num_per_page) * $num_per_page;
         for ($nCont = 1; $nCont <= $neighbors; $nCont++)
             if ($start + $num_per_page * $nCont <= $tmpMaxPages) {
                 $tmpStart = $start + $num_per_page * $nCont;
@@ -305,12 +303,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Показываем местоположение пользователя
-    -----------------------------------------------------------------
-    */
-    public static function display_place($user_id = '', $place = '')
-    {
+      -----------------------------------------------------------------
+      Показываем местоположение пользователя
+      -----------------------------------------------------------------
+     */
+
+    public static function display_place($user_id = '', $place = '') {
         global $headmod;
         $place = explode(",", $place);
         $placelist = parent::load_lng('places');
@@ -322,32 +320,34 @@ class functions extends core
                     $user = self::get_user($place[1]);
                     return $placelist['profile'] . ': <a href="' . self::$system_set['homeurl'] . '/users/profile.php?user=' . $user['id'] . '">' . $user['name'] . '</a>';
                 }
-            }
-            elseif ($place[0] == 'online' && isset($headmod) && $headmod == 'online') return $placelist['here'];
-            else return str_replace('#home#', self::$system_set['homeurl'], $placelist[$place[0]]);
+            } elseif ($place[0] == 'online' && isset($headmod) && $headmod == 'online')
+                return $placelist['here'];
+            else
+                return str_replace('#home#', self::$system_set['homeurl'], $placelist[$place[0]]);
         }
-        else return '<a href="' . self::$system_set['homeurl'] . '/index.php">' . $placelist['homepage'] . '</a>';
+        else
+            return '<a href="' . self::$system_set['homeurl'] . '/index.php">' . $placelist['homepage'] . '</a>';
     }
 
     /*
-    -----------------------------------------------------------------
-    Отображения личных данных пользователя
-    -----------------------------------------------------------------
-    $user          (array)     массив запроса в таблицу `users`
-    $arg           (array)     Массив параметров отображения
-       [lastvisit] (boolean)   Дата и время последнего визита
-       [stshide]   (boolean)   Скрыть статус (если есть)
-       [iphide]    (boolean)   Скрыть (не показывать) IP и UserAgent
-       [iphist]    (boolean)   Показывать ссылку на историю IP
+      -----------------------------------------------------------------
+      Отображения личных данных пользователя
+      -----------------------------------------------------------------
+      $user          (array)     массив запроса в таблицу `users`
+      $arg           (array)     Массив параметров отображения
+      [lastvisit] (boolean)   Дата и время последнего визита
+      [stshide]   (boolean)   Скрыть статус (если есть)
+      [iphide]    (boolean)   Скрыть (не показывать) IP и UserAgent
+      [iphist]    (boolean)   Показывать ссылку на историю IP
 
-       [header]    (string)    Текст в строке после Ника пользователя
-       [body]      (string)    Основной текст, под ником пользователя
-       [sub]       (string)    Строка выводится вверху области "sub"
-       [footer]    (string)    Строка выводится внизу области "sub"
-    -----------------------------------------------------------------
-    */
-    public static function display_user($user = false, $arg = false)
-    {
+      [header]    (string)    Текст в строке после Ника пользователя
+      [body]      (string)    Основной текст, под ником пользователя
+      [sub]       (string)    Строка выводится вверху области "sub"
+      [footer]    (string)    Строка выводится внизу области "sub"
+      -----------------------------------------------------------------
+     */
+
+    public static function display_user($user = false, $arg = false) {
         global $rootpath, $mod;
         $out = false;
 
@@ -371,7 +371,7 @@ class functions extends core
                         . '.png" width="16" height="16" align="middle" alt="' . ($user['sex'] == 'm' ? 'М' : 'Ж') . '" />&#160;';
             else
                 $out .= '<img src="' . self::$system_set['homeurl'] . '/images/del.png" width="12" height="12" align="middle" />&#160;';
-            $out .= !self::$user_id || self::$user_id == $user['id'] ? '<b>' . $user['name'] . '</b>' : '<a href="' . self::$system_set['homeurl'] . '/users/profile.php?user=' . $user['id'] . '"><b>' . $user['name'] . '</b></a>';
+            $out .=!self::$user_id || self::$user_id == $user['id'] ? '<b>' . $user['name'] . '</b>' : '<a href="' . self::$system_set['homeurl'] . '/users/profile.php?user=' . $user['id'] . '"><b>' . $user['name'] . '</b></a>';
             $rank = array(
                 0 => '',
                 1 => '(GMod)',
@@ -430,12 +430,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Форматирование имени файла
-    -----------------------------------------------------------------
-    */
-    public static function format($name)
-    {
+      -----------------------------------------------------------------
+      Форматирование имени файла
+      -----------------------------------------------------------------
+     */
+
+    public static function format($name) {
         $f1 = strrpos($name, ".");
         $f2 = substr($name, $f1 + 1, 999);
         $fname = strtolower($f2);
@@ -443,12 +443,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Получаем данные пользователя
-    -----------------------------------------------------------------
-    */
-    public static function get_user($id = false)
-    {
+      -----------------------------------------------------------------
+      Получаем данные пользователя
+      -----------------------------------------------------------------
+     */
+
+    public static function get_user($id = false) {
         if ($id && $id != self::$user_id) {
             $req = mysql_query("SELECT * FROM `users` WHERE `id` = '$id'");
             if (mysql_num_rows($req)) {
@@ -462,12 +462,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Транслитерация с Русского в латиницу
-    -----------------------------------------------------------------
-    */
-    public static function rus_lat($str)
-    {
+      -----------------------------------------------------------------
+      Транслитерация с Русского в латиницу
+      -----------------------------------------------------------------
+     */
+
+    public static function rus_lat($str) {
         $replace = array(
             'а' => 'a',
             'б' => 'b',
@@ -507,12 +507,12 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Обработка смайлов
-    -----------------------------------------------------------------
-    */
-    public static function smileys($str, $adm = false)
-    {
+      -----------------------------------------------------------------
+      Обработка смайлов
+      -----------------------------------------------------------------
+     */
+
+    public static function smileys($str, $adm = false) {
         global $rootpath;
         static $smileys_cache = array();
         if (empty($smileys_cache)) {
@@ -529,28 +529,32 @@ class functions extends core
     }
 
     /*
-    -----------------------------------------------------------------
-    Функция пересчета на дни, или часы
-    -----------------------------------------------------------------
-    */
-    public static function timecount($var)
-    {
+      -----------------------------------------------------------------
+      Функция пересчета на дни, или часы
+      -----------------------------------------------------------------
+     */
+
+    public static function timecount($var) {
         global $lng;
-        if ($var < 0) $var = 0;
+        if ($var < 0)
+            $var = 0;
         $day = ceil($var / 86400);
-        if ($var > 345600) return $day . ' ' . $lng['timecount_days'];
-        if ($var >= 172800) return $day . ' ' . $lng['timecount_days_r'];
-        if ($var >= 86400) return '1 ' . $lng['timecount_day'];
+        if ($var > 345600)
+            return $day . ' ' . $lng['timecount_days'];
+        if ($var >= 172800)
+            return $day . ' ' . $lng['timecount_days_r'];
+        if ($var >= 86400)
+            return '1 ' . $lng['timecount_day'];
         return date("G:i:s", mktime(0, 0, $var));
     }
 
     /*
-    -----------------------------------------------------------------
-    Транслитерация текста
-    -----------------------------------------------------------------
-    */
-    public static function trans($str)
-    {
+      -----------------------------------------------------------------
+      Транслитерация текста
+      -----------------------------------------------------------------
+     */
+
+    public static function trans($str) {
         $replace = array(
             'a' => 'а',
             'b' => 'б',
@@ -619,4 +623,132 @@ class functions extends core
         );
         return strtr($str, $replace);
     }
+
+    /**
+     * thumbnail_item_game_app 
+     * Hàm thực hiện in ra mã HTML danh cho các item của trong trang GameApp list
+     * @param array $row - mảng array dòng kết quả trả về từ MySQL query
+     * @param string $src - $_GET['srrc']
+     * @param array $deviceInfo
+     * @param array $set - chứa các thiết lập của hệ thống nằm trong bảng cms_settings
+     * @return void - in rã chuỗi HTML
+     */
+    public static function thumbnail_item_game_app($row, $src, $deviceInfo, $set) {
+        if (isset($row['logo'])) {
+            echo '
+                        <tr>
+                            <td width="30%">
+                            <a href="' . $set['homeurl'] . '/gamestore/index.php?src=' . $src . '&amp;act=detail&amp;id=' . $row['id'] . '">
+                                <img src="' . $set['adminurl'] . '/' . $row['logo'] . '" style="width:70px; height: 70px"/>
+                            </a>
+                            </td>';
+            echo '<td width="70%" valign="top">' . $row['name'] . '<br />';
+            if (!empty($row['price'])) {
+                if ($deviceInfo['j2meSupport']) {
+                    echo '<a href="' . $set['adminurl'] . '/' . $row['j2me_jar_file_path'] . '">Giá: ' . $row['price'] . ' đồng</a>' . '<br />';
+                } elseif ($deviceInfo['deviceOS'] == 'android') {
+                    echo '<a href="' . $set['adminurl'] . '/' . $row['android_apk_file_path'] . '">Giá: ' . $row['price'] . ' đồng</a>' . '<br />';
+                } else {
+                    echo '<a href="#">Không hỗ trợ</a>' . '<br />';
+                }
+            } else {
+                if ($deviceInfo['j2meSupport']) {
+                    echo '<a href="' . $set['adminurl'] . '/' . $row['j2me_jar_file_path'] . '">Tải miễn phí</a>' . '<br />';
+                } elseif ($deviceInfo['deviceOS'] == 'android') {
+                    echo '<a href="' . $set['adminurl'] . '/' . $row['android_apk_file_path'] . '">Tải miễn phí</a>' . '<br />';
+                } else {
+                    echo '<a href="#">Không hỗ trợ</a>' . '<br />';
+                }
+            }
+            echo $row['short_decription'] . '<br />
+                                    <div class="chitiet">
+                                    <a href="' . $set['homeurl'] . '/gamestore/index.php?src=' . $src . '&amp;act=detail&amp;id=' . $row['id'] . '">Chi tiết</a>
+                                    </div>
+                             </td>
+                         </tr>';
+        } else {
+            echo '
+                          <tr>
+                            <td colspan="2" valign="top">' . $row['name'] . '<br />'
+            . $row['j2me_jad_file_path'] . '<br />'
+            . $row['short_decription'] .
+            '</td>
+                          </tr>';
+        }
+        echo '<tr><td colspan="2"><hr /></td></tr>';
+    }
+
+    /**
+     * detail_item_game_app
+     * Hàm thực hiện in ra mã HTML danh cho các item của trong trang GameApp detail
+     * @param array $row - mảng array dòng kết quả trả về từ MySQL query
+     * @param string $src - $_GET['srrc']
+     * @param array $deviceInfo
+     * @param array $set - chứa các thiết lập của hệ thống nằm trong bảng cms_settings
+     * @return void - in rã chuỗi HTML
+     */
+    public static function detail_item_game_app($row, $src, $deviceInfo, $set) {
+        echo '
+                <tr>
+                    <td colspan="2" class="danhmuc">'
+        . $row['name'] . '
+                    </td>
+                </tr>
+                ';
+        echo '<tr height="8px;"><td colspan="2"></td></tr>';
+        echo '
+                <tr>
+                    <td width="30%">
+                       <img src="' . $set['adminurl'] . '/' . $row['logo'] . '" style="width: 100px; height: 100px"/>
+                    </td>';
+        echo '
+                    <td width="70%" valign="top">';
+        
+        if (!empty($row['price'])) {
+            if ($deviceInfo['j2meSupport']) {
+                echo '<a href="' . $set['adminurl'] . '/' . $row['j2me_jar_file_path'] . '">Giá: ' . $row['price'] . ' đồng</a>' . '<br />';
+            } elseif ($deviceInfo['deviceOS'] == 'android') {
+                echo '<a href="' . $set['adminurl'] . '/' . $row['android_apk_file_path'] . '">Giá: ' . $row['price'] . ' đồng</a>' . '<br />';
+            } else {
+                echo '<a href="#">Không hỗ trợ</a>' . '<br />';
+            }
+        } else {
+            if ($deviceInfo['j2meSupport']) {
+                echo '<a href="' . $set['adminurl'] . '/' . $row['j2me_jar_file_path'] . '">Tải miễn phí</a>' . '<br />';
+            } elseif ($deviceInfo['deviceOS'] == 'android') {
+                echo '<a href="' . $set['adminurl'] . '/' . $row['android_apk_file_path'] . '">Tải miễn phí</a>' . '<br />';
+            } else {
+                echo '<a href="#">Không hỗ trợ</a>' . '<br />';
+            }
+        }
+
+        echo $row['total_download'] . ' số lượt tải<br /><br />';
+        echo '
+                    <a href="#">Thiết bị hỗ trợ</a><br /><br />
+                    <a href="#">Xem ảnh giới thiệu game</a>
+                    </td>
+                 </tr>
+                    ';
+        echo '
+                <tr>
+                    <td colspan="2" class="header-chitiet">Diễn đàn liên quan</td>
+                </tr>';
+        echo '
+                <tr>
+                    <td colspan="2">Nội dung tin mới trong diễn đàn.</td>
+                </tr>
+                    ';
+        echo '
+                <tr>
+                     <td colspan="2" class="header-chitiet">Giới thiệu</td>
+                </tr>
+                ';
+        echo '
+                 <tr>
+                      <td colspan="2">' . $row['description'] . '</td>
+                 </tr>
+                 ';
+        echo '<tr><td colspan="2"><hr /></td></tr>';
+    }
+
 }

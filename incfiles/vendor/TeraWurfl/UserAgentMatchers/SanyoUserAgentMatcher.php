@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,16 +20,18 @@
  * @package TeraWurflUserAgentMatchers
  */
 class SanyoUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return ($httpRequest->user_agent->iStartsWith('sanyo') || $httpRequest->user_agent->contains('MobilePhone'));
 	}
-	public function applyConclusiveMatch($ua) {
-		if(self::contains($ua,"MobilePhone")){
-			$tolerance = UserAgentUtils::indexOfOrLength($ua,'/',strpos($ua,"MobilePhone"));
-		}else{
-			$tolerance = UserAgentUtils::firstSlash($ua);
+	
+	public function applyConclusiveMatch() {
+		if ($this->userAgent->contains('MobilePhone')) {
+			$tolerance = $this->userAgent->indexOfOrLength('/', $this->userAgent->indexOf('MobilePhone'));
+		} else {
+			$tolerance = $this->userAgent->firstSlash();
 		}
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+		return $this->risMatch($tolerance);
 	}
 }

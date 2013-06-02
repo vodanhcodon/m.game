@@ -1,0 +1,2 @@
+<img src="<?php echo $path.$dirname ?>" alt="<?php echo $path.$dirname ?>" title="<?php echo $path.$dirname ?>" class="img-polaroid"/>
+<small class="label label-info"><?php echo $path.$dirname ?></small>

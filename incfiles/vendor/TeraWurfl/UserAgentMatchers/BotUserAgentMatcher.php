@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,16 +20,16 @@
  * @package TeraWurflUserAgentMatchers
  */
 class BotUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		return $httpRequest->isRobot();
 	}
-	public function applyConclusiveMatch($ua) {
-		$tolerance = UserAgentUtils::firstSlash($ua);
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		return $this->risMatch($this->userAgent->firstSlash());
 	}
-	public function recoveryMatch($ua){
-		//TODO: add more logic here
-		return WurflConstants::$GENERIC_WEB_BROWSER;
+	
+	public function applyRecoveryMatch() {
+		return WurflConstants::GENERIC_WEB_BROWSER;
 	}
 }

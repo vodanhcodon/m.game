@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,13 +20,15 @@
  * @package TeraWurflUserAgentMatchers
  */
 class SPVUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->contains('SPV');
 	}
-	public function applyConclusiveMatch($ua) {
-		$pos = strpos($ua,";");
-		$tolerance = ($pos === false)? strpos($ua,"SPV"): $pos;
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		$pos = $this->userAgent->indexOf(';');
+		$tolerance = ($pos !== false)? $pos: $this->userAgent->indexOfOrLength('SPV');
+		return $this->risMatch($tolerance);
 	}
 }

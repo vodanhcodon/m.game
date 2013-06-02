@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -20,17 +20,16 @@
  * @package TeraWurflUserAgentMatchers
  */
 class PantechUserAgentMatcher extends UserAgentMatcher {
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->startsWith(array('Pantech', 'PT-', 'PANTECH', 'PG-'));
 	}
-	public function applyConclusiveMatch($ua) {
-		if(self::startsWith($ua,"Pantech")){
-			$tolerance = 5;
-			$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: LD",LOG_INFO);
-			return $this->ldMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		if ($this->userAgent->startsWith('Pantech')) {
+			return $this->ldMatch(5);
 		}
-		$tolerance = UserAgentUtils::firstSlash($ua);
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+		return $this->risMatch($this->userAgent->firstSlash());
 	}
 }

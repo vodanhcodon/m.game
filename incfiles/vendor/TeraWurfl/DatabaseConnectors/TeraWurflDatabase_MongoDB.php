@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_Database
  * @copyright  ScientiaMobile, Inc.
@@ -134,12 +134,6 @@ class TeraWurflDatabase_MongoDB extends TeraWurflDatabase {
 		return $data;
 	}
 
-
-	/**
-	 * Exact match by user agent string
-	 *
-	 * @param string $userAgent
-	 */
 	public function getDeviceFromUA($userAgent) {
 		$tofind = array(
 					'user_agent' => utf8_encode($userAgent),
@@ -173,13 +167,13 @@ class TeraWurflDatabase_MongoDB extends TeraWurflDatabase {
 		if ( !empty($response['ok']) && $response['ok'] == 1 && !empty($response['retval'])) {
 			return $response['retval'];
 		}
-		return WurflConstants::$GENERIC;
+		return WurflConstants::NO_MATCH;
 	}
 	public function getDeviceFallBackTree($wurflID){
 		$this->numQueries++;
 		$response = $this->dbcon->execute('function(deviceID){ return performFallback(deviceID) }',array($wurflID));
 		$data = $response['retval'];
-		if($data[count($data)-1]['id'] != WurflConstants::$GENERIC){
+		if($data[count($data)-1]['id'] != WurflConstants::NO_MATCH){
 			$tw = new TeraWurfl();
 			$tw->toLog("WURFL Error: device {$data[count($data)-1]['id']} falls back on an inexistent device: {$data[count($data)-1]['fall_back']}",LOG_ERR,__CLASS__.'::'.__FUNCTION__);
 		}
@@ -191,9 +185,7 @@ class TeraWurflDatabase_MongoDB extends TeraWurflDatabase {
 		$matcher = array_pop($parts);
 		return $matcher;
 	}
-	/**
-	 * @param array $tables
-	 */
+
 	public function loadDevices(&$tables) {
 
 		$insert_errors = array();
@@ -474,9 +466,9 @@ EOL;
 	public function getSetting($key){
 		$collection = $this->dbcon->selectCollection(TeraWurflConfig::$TABLE_PREFIX.'Settings');
 		$record = $collection->findOne(array('_id'=>$key),array('value'));
+        $this->numQueries++;
 		if(is_null($record)) return null;
 		return $record['value'];
-		$this->numQueries++;
 	}
 
 
@@ -632,11 +624,23 @@ EOL;
 	public function getDeviceFromUA_LD($userAgent, $tolerance, UserAgentMatcher $matcher) {
 		throw new Exception("Error: this function (LD) is not yet implemented in MongoDB");
 	}
+	
+	/**
+	 * Returns true if the required extensions for this database connector are loaded
+	 * @return boolean
+	 */
+	public static function extensionLoaded() {
+		return class_exists('Mongo');
+	}
 
-	// methods enforced by parent class, but never called ----------------------
+	/**#@+
+     * Methods enforced by parent class, but not used for this connector
+     * @return null|array
+     */
 	public function getMatcherTableList(){return array();}
 	public function createGenericDeviceTable($tablename) {}
 	public function getActualDeviceAncestor($wurflID) {}
 	public function clearTable($tablename) {}
 	public function createIndexTable(){}
+    /**#@-*/
 }

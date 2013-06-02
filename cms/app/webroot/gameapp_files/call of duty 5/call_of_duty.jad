@@ -1,0 +1,9 @@
+﻿MIDlet-Vendor: linktone
+MIDlet-Version: 1.0.0
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-1: 特种部队之孤胆英雄, bin/icon.png, StartMidlet
+MIDlet-Icon: bin/icon.png
+MIDlet-Name: Lực lượng đặc biệt 1
+MicroEdition-Profile: MIDP-1.0
+MIDlet-Jar-Size: 730446
+MIDlet-Jar-URL: Biet-doi-anh-hung.jar

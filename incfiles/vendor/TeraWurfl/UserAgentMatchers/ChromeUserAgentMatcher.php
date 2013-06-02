@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -21,17 +21,22 @@
  */
 class ChromeUserAgentMatcher extends UserAgentMatcher {
 	
-	public static $constantIDs = array("google_chrome");
+	public $runtime_normalization = true;
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static $constantIDs = array(
+		'google_chrome'
+	);
+	
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isMobileBrowser()) return false;
+		return $httpRequest->user_agent->contains('Chrome');
 	}
-	public function applyConclusiveMatch($ua) {
-		$tolerance = UserAgentUtils::indexOfOrLength($ua,'/',strpos($ua,'Chrome'));
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		$this->userAgent->set(substr($this->userAgent, $this->userAgent->indexOf('Chrome')));
+		return $this->risMatch($this->userAgent->indexOf('.'));
 	}
-	public function recoveryMatch($ua){
+	public function applyRecoveryMatch() {
 		return 'google_chrome';
 	}
 }

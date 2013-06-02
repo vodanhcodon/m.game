@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL
  * @copyright  ScientiaMobile, Inc.
@@ -39,59 +39,97 @@ class TeraWurflWebservice {
 	 * Unauthorized attempts to use this webservice are logged to the Tera-WURFL log file
 	 * with a severity of LOG_WARNING.
 	 * 
-	 * @var Mixed
+	 * @var array|bool
 	 */
 	public static $ALLOWED_CLIENT_IPS = false;
-	
+
+    /**#@+
+     * @var string Data formats
+     */
 	public static $FORMAT_XML = 'xml';
 	public static $FORMAT_JSON = 'json';
+    /**#@-*/
 	
 	/**
 	 * Log all errors from the webservice
-	 * @var Boolean Enable
+	 * @var bool Enable
 	 */
 	public $enable_error_log = true;
 	/**
 	 * Filename of error log
-	 * @var String
+	 * @var string
 	 */
 	public $error_log_filename = 'webservice_error.log';
 	/**
 	 * The directory where the error log is stored.  Set to null to use the Tera-WURFL data/ directory
-	 * @var String
+	 * @var string
 	 */
 	public $error_log_path = null;
 	/**
 	 * Log all access of the webservice
-	 * @var Boolean Enable
+	 * @var bool Enable
 	 */
 	public $enable_access_log = false;
 	/**
 	 * Filename of access log
-	 * @var String
+	 * @var string
 	 */
 	public $access_log_filename = 'webservice_access.log';
 	/**
 	 * The directory where the access log is stored.  Set to null to use the Tera-WURFL data/ directory
-	 * @var String
+	 * @var string
 	 */
 	public $access_log_path = null;
 	/**
 	 * Errors encountered during processing
-	 * @var Array errors
+	 * @var array errors
 	 */
 	public $errors;
-	
+
+    /**
+     * @var string Format of request
+     */
 	protected $format;
+    /**
+     * @var string XML Response
+     */
 	protected $xml;
+    /**
+     * @var string JSON Response
+     */
 	protected $json;
+    /**
+     * @var array Capabilities to be included in output
+     */
 	protected $out_cap = array();
+    /**
+     * @var array Capabilities that were found in WURFL
+     */
 	protected $search_results = array();
+    /**
+     * @var array Errors to be included in response
+     */
 	protected $out_errors = array();
+    /**
+     * @var string Incoming user agent
+     */
 	protected $userAgent;
+    /**
+     * @var null|TeraWurfl Instance of TeraWurfl
+     */
 	protected $wurflObj;
+    /**
+     * @var array Capabilities array flattened into a Key=>Value pair array
+     */
 	protected $flatCapabilities = array();
-	
+
+    /**
+     * Instantiates a new TeraWurflWebservice
+     * @param string $userAgent User Agent
+     * @param string $searchPhrase Search phrase
+     * @param string $data_format String
+     * @param null|TeraWurfl $teraWurflInstance Instance of TeraWurfl to use for detection
+     */
 	public function __construct($userAgent,$searchPhrase,$data_format='xml',$teraWurflInstance=null){
 		set_exception_handler(array($this,'__handleExceptions'));
 		require_once realpath(dirname(__FILE__).'/TeraWurfl.php');
@@ -123,7 +161,7 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Get the response that would normally be sent to the client.
-	 * @return String Response
+	 * @return string Response
 	 */
 	public function getResponse(){
 		switch($this->format){
@@ -135,10 +173,10 @@ class TeraWurflWebservice {
 				return $this->xml;
 				break;
 		}
+        return null;
 	}
 	/**
 	 * Send the HTTP Headers for the return data
-	 * @return void
 	 */
 	public function sendHTTPHeaders(){
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
@@ -155,17 +193,16 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Send the complete response to the client, including the HTTP Headers and the response.
-	 * @return void
 	 */
 	public function sendResponse(){
 		$this->sendHTTPHeaders();
 		echo $this->getResponse();
 	}
 	/**
-	 * See if a given ip ($ip) is in a given CIDR network ($cidr_range)
-	 * @param String CIDR Network (e.g. "192.168.2.0/24")
-	 * @param String IP Address
-	 * @return Bool IP Address is in CIDR Network
+	 * See if a given ip ($ip) is in a given CIDR network ($cidr_network)
+	 * @param string $cidr_network CIDR Network (e.g. "192.168.2.0/24")
+	 * @param string $ip IP Address
+	 * @return bool IP Address is in CIDR Network
 	 */
 	public static function ipInCIDRNetwork($cidr_network,$ip){
 		// Thanks Bill Grady for posting a *working* IP in CIDR network function!
@@ -195,7 +232,7 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Is the connecting client allowed to use this webservice
-	 * @return Bool
+	 * @return bool
 	 */
 	protected function isClientAllowed(){
 		if(!self::$ALLOWED_CLIENT_IPS || $_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;
@@ -205,11 +242,12 @@ class TeraWurflWebservice {
 		}
 		return false;
 	}
-	/**
-	 * Converts PHP variables to an XML friendly string
-	 * @param Mixed Value
-	 * @return String Value
-	 */
+
+    /**
+     * Converts PHP variables to an XML friendly string
+     * @param null|int|bool|string|float $in Value
+     * @return string Value
+     */
 	protected function exportValue($in){
 		if(is_bool($in))return var_export($in,true);
 		if(is_null($in) || !isset($in))return '';
@@ -217,9 +255,8 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Add an error to the errors array that will be sent in the response
-	 * @param String Capability name that is in error
-	 * @param String Description of the error
-	 * @return void
+	 * @param string $name Capability name that is in error
+	 * @param string $desc Description of the error
 	 */
 	protected function addError($name,$desc){
 		if($this->enable_error_log) $this->logError("Client ".$_SERVER['REMOTE_ADDR']." requested an invalid capability: $name",LOG_WARNING);
@@ -228,8 +265,7 @@ class TeraWurflWebservice {
 	/**
 	 * Search through all the capabilities and place the requested ones in search_results to
 	 * be sent in the response.
-	 * @param String Search phrase (e.g. "is_wireless_device|streaming|tera_wurfl")
-	 * @return void
+	 * @param string $searchPhrase Search phrase (e.g. "is_wireless_device|streaming|tera_wurfl")
 	 */
 	protected function search($searchPhrase){
 		if (!empty($searchPhrase)){
@@ -257,11 +293,13 @@ class TeraWurflWebservice {
 		}
 	}
 	/**
-	 * Flatten the multi-tiered capabilities array into a list of capabilities.
-	 * @return void
+	 * Flatten the multidimensional capabilities array into a list of capabilities.
 	 */
 	protected function flattenCapabilities(){
 		$this->flatCapabilities = array();
+		if ($this->wurflObj->capabilities === null || count($this->wurflObj->capabilities) === 0) {
+			return;
+		}
 		foreach($this->wurflObj->capabilities as $key => $value){
 			if(is_array($value)){
 				foreach($value as $subkey => $subvalue){
@@ -274,7 +312,6 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Generate the XML response
-	 * @return void
 	 */
 	protected function generateXML(){
 		$this->xml = '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
@@ -296,7 +333,6 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Generate JSON response
-	 * @return void
 	 */
 	protected function generateJSON(){
 		$data = array(
@@ -312,7 +348,7 @@ class TeraWurflWebservice {
 	}
 	/**
 	 * Generate the errors section of the XML response
-	 * @return String XML errors section
+	 * @return string XML errors section
 	 */
 	protected function generateXMLErrors(){
 		$xml = '';
@@ -328,7 +364,7 @@ class TeraWurflWebservice {
 		return $xml;
 	}
 	/**
-	 * Log this access with the IP of the requestor and the user agent
+	 * Log this access with the IP of the requester and the user agent
 	 */
 	protected function logAccess(){
 		$_textToLog = sprintf('%s [%s %s][%s] %s',
@@ -342,13 +378,13 @@ class TeraWurflWebservice {
 		$logfile = $path.$this->access_log_filename;
 		@file_put_contents($logfile,$_textToLog,FILE_APPEND);
 	}
-/**
-	 * Log an error in the TeraWurflWebservice log file
-	 * @param String The error message text
-`	 * @param Int The log level / severity of the error
-	 * @param String The function or code that was being run when the error occured
-	 * @return void
-	 */
+
+    /**
+     * Log an error in the TeraWurflWebservice log file
+     * @param string $text The error message text
+     * @param int $requestedLogLevel The log level / severity of the error
+     * @param string $func The function or code that was being run when the error occurred
+     */
 	protected function logError($text, $requestedLogLevel=LOG_NOTICE, $func="TeraWurflWebservice"){
 		if($requestedLogLevel == LOG_ERR) $this->errors[] = $text;
 		if (TeraWurflConfig::$LOG_LEVEL == 0 || ($requestedLogLevel-1) >= TeraWurflConfig::$LOG_LEVEL ) {
@@ -366,6 +402,10 @@ class TeraWurflWebservice {
 		$logfile = $path.$this->error_log_filename;
 		@file_put_contents($logfile,$_textToLog,FILE_APPEND);
 	}
+    /**
+     * Exception handler for webservice
+     * @param Exception $exception
+     */
 	public function __handleExceptions(Exception $exception){
 		$this->logError($exception->getMessage(),LOG_ERR);
 	}

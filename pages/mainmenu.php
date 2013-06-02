@@ -55,48 +55,7 @@ if (mysql_num_rows($lst_all_cate) == 1) {
             $i = 0;
             while (($res_app = mysql_fetch_assoc($lst_game_app_top9)) !== false) {
                 if ($i < 3) {
-                    if (isset($res_app['logo'])) {
-                        echo '
-                        <tr>
-                            <td width="30%">
-                            <a href="' . $set['homeurl'] . '/gamestore/index.php?src=' . $src . '&amp;act=detail&amp;id=' . $res_app['id'] . '">
-                                <img src="' . $set['homeurl'] . '/gameapp_files/' . $res_app['name'] . '/' . $res_app['logo'] . '" />
-                            </a>
-                            </td>';
-                        echo '<td width="70%" valign="top">' . $res_app['name'] . '<br />';
-                        if (!empty($res_app['price'])) {
-                            if ($deviceInfo['j2meSupport']) {
-                                echo '<a href="' . $set['homeurl'] . '/' . $res_app['j2me_jar_file_path'] . '">Giá: ' . $res_app['price'] . ' đồng</a>' . '<br />';
-                            } elseif ($deviceInfo['deviceOS'] == 'android') {
-                                echo '<a href="' . $set['homeurl'] . '/' . $res_app['android_apk_file_path'] . '">Giá: ' . $res_app['price'] . ' đồng</a>' . '<br />';
-                            } else {
-                                echo '<a href="#">Không hỗ trợ</a>' . '<br />';
-                            }
-                        } else {
-                            if ($deviceInfo['j2meSupport']) {
-                                echo '<a href="' . $set['homeurl'] . '/' . $res_app['j2me_jar_file_path'] . '">Tải miễn phí</a>' . '<br />';
-                            } elseif ($deviceInfo['deviceOS'] == 'android') {
-                                echo '<a href="' . $set['homeurl'] . '/' . $res_app['android_apk_file_path'] . '">Tải miễn phí</a>' . '<br />';
-                            } else {
-                                echo '<a href="#">Không hỗ trợ</a>' . '<br />';
-                            }
-                        }
-                        echo $res_app['short_decription'] . '<br />
-                                    <div class="chitiet">
-                                    <a href="' . $set['homeurl'] . '/gamestore/index.php?src=' . $src . '&amp;act=detail&amp;id=' . $res_app['id'] . '">Chi tiết</a>
-                                    </div>
-                             </td>
-                         </tr>';
-                    } else {
-                        echo '
-                          <tr>
-                            <td colspan="2" valign="top">' . $res_app['name'] . '<br />'
-                        . $res_app['j2me_jad_file_path'] . '<br />'
-                        . $res_app['short_decription'] .
-                        '</td>
-                          </tr>';
-                    }
-                    echo '<tr><td colspan="2"><hr /></td></tr>';
+                    functions::thumbnail_item_game_app($res_app, $src, $deviceInfo, $set);
                 } else {
                     if ($i == 3) {
                         echo '<tr><td colspan="2">';

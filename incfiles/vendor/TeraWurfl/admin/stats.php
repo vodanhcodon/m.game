@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_Admin
  * @copyright  ScientiaMobile, Inc.
@@ -89,7 +89,7 @@ if(!is_readable($logfile) || filesize($logfile) < 5){
 				Actual Devices: <span class="setting"><?php echo $mergestats['actual_devices']?></span> <br />
 				Table Size: <span class="setting"><?php echo WurflSupport::formatBytes($mergestats['bytesize'])?></span><br />
 				Purpose:<br />
-				<span class="setting">The MERGE table holds all the data from the WURFL file, whether it be local, remote or remote CVS,  whenever a new WURFL is loaded, it is loaded into this table first, then it is filtered through all the UserAgentMatchers and split into many different tables specific to each matching technique. This MERGE table is retained for a last chance lookup if the UserAgentMatchers and INDEX table are unable to provide a conclusive match.</span></td>
+				<span class="setting">The MERGE table holds all the data from the WURFL file.  When a new WURFL is loaded, it is loaded into this table first, then it is filtered through all the UserAgentMatchers and split into many different tables specific to each matching technique. This MERGE table is retained for a last chance lookup if the UserAgentMatchers and INDEX table are unable to provide a conclusive match.</span></td>
 		</tr>
 <?php if(!empty($indexstats)){ ?>
 		<tr>
@@ -161,9 +161,6 @@ Table Size: <span class="setting"><?php echo WurflSupport::formatBytes($matcher[
 					WURFL_DL_URL <span class="setting">
 						<?php echo TeraWurflConfig::$WURFL_DL_URL?>
 							</span>, full URL to the current WURFL<br />
-					WURFL_CVS_URL <span class="setting">
-						<?php echo TeraWurflConfig::$WURFL_CVS_URL?>
-					  </span>, full URL to development (CVS) WURFL<br />
 					DATADIR <span class="setting">
 						<?php echo TeraWurflConfig::$DATADIR?>
 			  </span>,	where all data is stored (wurfl.xml, temp files, logs)<br />

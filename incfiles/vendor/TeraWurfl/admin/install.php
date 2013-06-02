@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_Admin
  * @copyright  ScientiaMobile, Inc.
@@ -30,6 +30,12 @@ if(!class_exists('TeraWurflConfig',false)){
 }
 
 require_once realpath(dirname(__FILE__).'/../TeraWurfl.php');
+
+$dbconnector = 'TeraWurflDatabase_'.TeraWurflConfig::$DB_CONNECTOR;
+if (!call_user_func(array($dbconnector, 'extensionLoaded'))) {
+	die("You do not have the PHP extensions required to use the database connector $dbconnector.  If you are using the default MySQL5 connector, you need the PHP 'mysqli' extension loaded");
+}
+
 // Turn error reporting down now that the suporting files have been loaded
 error_reporting(E_ERROR);
 @$tw = new TeraWurfl();
@@ -211,8 +217,7 @@ if(!$tw->db->connected){
 			<td><div align="left" style="padding-left:15px;"><br />
 				 If everything looks ok, <strong>delete <?php echo $tw->rootdir; ?>admin/install.php</strong>, then update your database from one of the following sources:
 				 <ul><li><a href="updatedb.php?source=local">Your local WURFL file</a> (<?php echo TeraWurflConfig::$WURFL_FILE?>)</li>
-				 <li><a href="updatedb.php?source=remote">The current released WURFL</a> (<?php echo TeraWurflConfig::$WURFL_DL_URL?>)</li>
-				 <!-- <li><a href="updatedb.php?source=remote_cvs">The current CVS WURFL</a> (<?php echo TeraWurflConfig::$WURFL_CVS_URL?>)</li> -->
+				 <li><a href="updatedb.php?source=remote&force=true">The current released WURFL</a> (<?php echo TeraWurflConfig::$WURFL_DL_URL?>)</li>
 				 </ul>
 			</div></td>
 		</tr>

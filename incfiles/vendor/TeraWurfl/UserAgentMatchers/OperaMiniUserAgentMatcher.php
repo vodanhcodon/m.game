@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_UserAgentMatcher
  * @copyright  ScientiaMobile, Inc.
@@ -22,29 +22,30 @@
 class OperaMiniUserAgentMatcher extends UserAgentMatcher {
 	
 	public static $constantIDs = array(
-		'browser_opera_mini_release1',
-		'browser_opera_mini_release2',
-		'browser_opera_mini_release3',
-		'browser_opera_mini_release4',
-		'browser_opera_mini_release5',
+		'Opera Mini/1' => 'generic_opera_mini_version1',
+        'Opera Mini/2' => 'generic_opera_mini_version2',
+        'Opera Mini/3' => 'generic_opera_mini_version3',
+        'Opera Mini/4' => 'generic_opera_mini_version4',
+        'Opera Mini/5' => 'generic_opera_mini_version5',
 	);
 	
-	public function __construct(TeraWurfl $wurfl){
-		parent::__construct($wurfl);
+	public static function canHandle(TeraWurflHttpRequest $httpRequest) {
+		if ($httpRequest->isDesktopBrowser()) return false;
+		return $httpRequest->user_agent->contains(array('Opera Mini', 'Opera Mobi'));
 	}
-	public function applyConclusiveMatch($ua) {
-		$tolerance = UserAgentUtils::firstSlash($ua);
-		$this->wurfl->toLog("Applying ".get_class($this)." Conclusive Match: RIS with threshold $tolerance",LOG_INFO);
-		return $this->risMatch($ua, $tolerance);
+	
+	public function applyConclusiveMatch() {
+		return $this->risMatch($this->userAgent->firstSlash());
 	}
-	public function recoveryMatch($ua){
-		$this->wurfl->toLog("Applying ".get_class($this)." recovery match ($ua)",LOG_INFO);
-		if(preg_match('#Opera Mini/([1-5])#',$ua,$matches)){
-			return 'browser_opera_mini_release'.$matches[1];
+	public function applyRecoveryMatch(){
+		foreach (self::$constantIDs as $keyword => $device_id) {
+			if ($this->userAgent->contains($keyword)) {
+				return $device_id;
+			}
 		}
-		if(self::contains($ua,'Opera Mobi')){
-			return 'browser_opera_mini_release4';
+		if ($this->userAgent->contains('Opera Mobi')) {
+			return 'generic_opera_mini_version4';
 		}
-		return 'browser_opera_mini_release1';
+		return 'generic_opera_mini_version1';
 	}
 }

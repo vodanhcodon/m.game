@@ -7,7 +7,7 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * Refer to the COPYING file distributed with this package.
+ * Refer to the COPYING.txt file distributed with this package.
  *
  * @package    WURFL_Database
  * @copyright  ScientiaMobile, Inc.
@@ -28,7 +28,10 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 	public $db_implements_ld = false;
 	public $numQueries = 0;
 	public $connected = false;
-	
+
+    /**
+     * @var MySQLi
+     */
 	protected $dbcon;
 	
 	public $maxquerysize = 0;
@@ -53,16 +56,16 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 		$res = $this->dbcon->query("SELECT * FROM `".TeraWurflConfig::$TABLE_PREFIX.'Merge'."` WHERE `deviceID`=".$this->SQLPrep($wurflID));
 		if(!$res) throw new Exception("Error: ".$this->dbcon->error);
 		if($res->num_rows == 0){
-			$res->close();
+			$res = null;
 			throw new Exception("Tried to lookup an invalid WURFL Device ID: $wurflID");
 		}
 		$data = $res->fetch_assoc();
-		$res->close();
+		$res = null;
 		return unserialize($data['capabilities']);
 	}
 	public function getActualDeviceAncestor($wurflID){
-		if($wurflID == "" || $wurflID == WurflConstants::$GENERIC)
-			return WurflConstants::$GENERIC;
+		if($wurflID == "" || $wurflID == WurflConstants::NO_MATCH)
+			return WurflConstants::NO_MATCH;
 		$device = $this->getDeviceFromID($wurflID);
 		if($device['actual_device_root']){
 			return $device['id'];
@@ -74,7 +77,7 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 		$this->numQueries++;
 		$res = $this->dbcon->query("SELECT `deviceID`, `user_agent` FROM `$tablename` WHERE `match`=1");
 		if($res->num_rows == 0){
-			$res->close();
+			$res = null;
 			return array();
 		}
 		$data = array();
@@ -89,11 +92,11 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 		$query = "SELECT `deviceID` FROM `".TeraWurflConfig::$TABLE_PREFIX.'Merge'."` WHERE `user_agent`=".$this->SQLPrep($userAgent);
 		$res = $this->dbcon->query($query);
 		if($res->num_rows == 0){
-			$res->close();
+			$res = null;
 			return false;
 		}
 		$data = $res->fetch_assoc();
-		$res->close();
+		$res = null;
 		return $data['deviceID'];
 	}
 	public function loadDevices(&$tables){
@@ -109,6 +112,7 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 			$parts = explode('_',$table);
 			$matcher = array_pop($parts);
 			$this->createGenericDeviceTable($temptable);
+            $device = array();
 			foreach($devices as $device){
 				$this->dbcon->query("INSERT INTO `".TeraWurflConfig::$TABLE_PREFIX.'Index'."` (`deviceID`,`matcher`) VALUE (".$this->SQLPrep($device['id']).",".$this->SQLPrep($matcher).")");
 				// convert device root to tinyint format (0|1) for db
@@ -160,7 +164,7 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 	/**
 	 * Drops and creates the given device table
 	 *
-	 * @param string Table name (ex: TeraWurflConfig::$HYBRID)
+	 * @param string $tablename Table name (ex: TeraWurflConfig::$HYBRID)
 	 * @return boolean success
 	 */
 	public function createGenericDeviceTable($tablename){
@@ -189,7 +193,7 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 	 * @return boolean success
 	 */
 	protected function clearMatcherTables(){
-		foreach(UserAgentFactory::$matchers as $matcher){
+		foreach(WurflConstants::$matchers as $matcher){
 			$table = TeraWurflConfig::$TABLE_PREFIX."_".$matcher;
 			$this->createGenericDeviceTable($table);
 		}
@@ -198,13 +202,12 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 	/**
 	 * Drops and creates the MERGE table
 	 *
-	 * @param array Table names
+	 * @param array $tables Table names
 	 * @return boolean success
 	 */
 	public function createMergeTable($tables){
 		$tablename = TeraWurflConfig::$TABLE_PREFIX.'Merge';
 		foreach($tables as &$table){$table="SELECT * FROM `$table`";}
-		$droptable = "DROP TABLE IF EXISTS ".$tablename;
 		$this->createGenericDeviceTable($tablename);
 		$createtable = "INSERT INTO `$tablename` ".implode(" UNION ALL ",$tables);
 		$this->numQueries++;
@@ -258,12 +261,12 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 		$res = $this->dbcon->query("SELECT * FROM `$tablename` WHERE `user_agent`=".$this->SQLPrep($userAgent));
 		if(!$res) throw new Exception("Error: ".$this->dbcon->error);
 		if($res->num_rows == 0){
-			$res->close();
+			$res = null;
 			//echo "[[UA NOT FOUND IN CACHE: $userAgent]]";
 			return false;
 		}
 		$data = $res->fetch_assoc();
-		$res->close();
+		$res = null;
 		return unserialize($data['cache_data']);
 		
 	}
@@ -361,9 +364,7 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 			$this->createGenericDeviceTable($tablename);
 		}
 	}
-	/**
-	 * Establishes connection to database (does not check for DB sanity)
-	 */
+    
 	public function connect(){
 		$this->numQueries++;
 		if(strpos(TeraWurflConfig::$DB_HOST,':')){
@@ -398,21 +399,21 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 	// prep raw text for use in queries (adding quotes if necessary)
 	public function SQLPrep($value){
 		if($value == '') $value = 'NULL';
-		else if (!is_numeric($value) || $value[0] == '0') $value = "'" . $this->dbcon->real_escape_string($value) . "'"; //Quote if not integer
+		else if (!TeraWurflDatabase::isNumericSafe($value) || $value[0] == '0') $value = "'" . $this->dbcon->real_escape_string($value) . "'"; //Quote if not integer
 		return $value;
 	}
 	public function getTableList(){
 		$tablesres = $this->dbcon->query("SHOW TABLES");
 		$tables = array();
 		while($table = $tablesres->fetch_row())$tables[]=$table[0];
-		$tablesres->close();
+		$tablesres = null;
 		return $tables;
 	}
 	public function getMatcherTableList(){
 		$tablesres = $this->dbcon->query("SHOW TABLES LIKE '".TeraWurflConfig::$TABLE_PREFIX."\\_%'");
 		$tables = array();
 		while($table = $tablesres->fetch_row())$tables[]=$table[0];
-		$tablesres->close();
+		$tablesres = null;
 		return $tables;
 	}
 	public function getTableStats($table){
@@ -424,19 +425,19 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 			$fields[] = 'CHAR_LENGTH(`'.$row['Field'].'`)';
 			$fieldnames[]=$row['Field'];
 		}
-		$fieldsres->close();
+		$fieldsres = null;
 		$bytesizequery = "SUM(".implode('+',$fields).") AS `bytesize`";
 		$query = "SELECT COUNT(*) AS `rowcount`, $bytesizequery FROM `$table`";
 		$res = $this->dbcon->query($query);
 		$rows = $res->fetch_assoc();
 		$stats['rows'] = $rows['rowcount'];
 		$stats['bytesize'] = $rows['bytesize'];
-		$res->close();
+		$res = null;
 		if(in_array("actual_device_root",$fieldnames)){
 			$res = $this->dbcon->query("SELECT COUNT(*) AS `devcount` FROM `$table` WHERE actual_device_root=1");
 			$row = $res->fetch_assoc();
 			$stats['actual_devices'] = $row['devcount'];
-			$res->close();
+			$res = null;
 		}
 		return $stats;
 	}
@@ -444,7 +445,7 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 		$uas = array();
 		$cacheres = $this->dbcon->query("SELECT user_agent FROM ".TeraWurflConfig::$TABLE_PREFIX.'Cache'." ORDER BY user_agent");
 		while($ua = $cacheres->fetch_row())$uas[]=$ua[0];
-		$cacheres->close();
+		$cacheres = null;
 		return $uas;
 	}
 	public function getServerVersion(){
@@ -452,5 +453,12 @@ class TeraWurflDatabase_MySQL4 extends TeraWurflDatabase{
 		if(!$res || $res->num_rows == 0) return '[not connected]';
 		$row = $res->fetch_assoc();
 		return($row['version']);
+	}
+	/**
+	 * Returns true if the required extensions for this database connector are loaded
+	 * @return boolean
+	 */
+	public static function extensionLoaded() {
+		return class_exists('mysqli');
 	}
 }
