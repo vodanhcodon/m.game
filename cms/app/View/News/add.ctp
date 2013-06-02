@@ -92,12 +92,15 @@ echo $this->element('jquery_file_upload');
                     </div>
                     <div class="row-fluid">
                         <?php
-                        echo $this->Form->input('product_distribution_id', array(
-                            'label' => __('Tên product distribution'),
-                            'class' => 'input-xlarge',
-                            'options' => $app,
-                            'empty' => '------',
-                        ));
+                        // thay đổi req, PRODUCT DISTRIBUTION hiện tại không có type = 6 nữa
+                        // mà có type giống với NEWS tức = 2
+                        // thay đổi này đồng thời xóa bỏ quan hện giữa gom_news và gom_product_distribution
+//                        echo $this->Form->input('product_distribution_id', array(
+//                            'label' => __('Tên product distribution'),
+//                            'class' => 'input-xlarge',
+//                            'options' => $app,
+//                            'empty' => '------',
+//                        ));
                         ?>
                     </div>
                 </div>

@@ -326,7 +326,11 @@ class ProductDistributionController extends AppController {
         $this->set('orders', $orders);
 
         $types = Configure::read('gom.DanhMuc.type');
-        $product_type = array_search('PRODUCT DISTRIBUTION', $types);
+        // thay đổi req, PRODUCT DISTRIBUTION hiện tại không có type = 6 nữa
+        // mà có type giống với NEWS tức = 2
+        // thay đổi này đồng thời xóa bỏ quan hện giữa gom_news và gom_product_distribution
+//        $product_type = array_search('PRODUCT DISTRIBUTION', $types);
+        $product_type = array_search('NEWS', $types);
 
         $trees = $this->getTreeDanhMuc($product_type);
         $danhmuc = $this->buildOptsDanhMuc($trees);
