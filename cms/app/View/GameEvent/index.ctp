@@ -31,7 +31,14 @@ echo $this->element('update_list');
     <legend>Danh sách sự kiện GameEvent</legend>
 
     <div class="row-fluid">
-        <?php echo $this->Form->create('GameEvent', array('action' => 'search')); ?>
+        <?php
+        echo $this->Form->create('GameEvent', array(
+            'url' => array(
+                'controller' => 'GameEvent',
+                'action' => 'search',
+            )
+        ));
+        ?>
         <div class="row-fluid">
             <div class="span4">
                 <div class="control-group">
@@ -155,7 +162,7 @@ echo $this->element('update_list');
     <?php echo $this->Form->end(); ?>
 </fieldset>
 <div class="form-actions">
-    <?php // echo $this->Form->hidden('GameEvent.submitflag', array('value' => 'search', 'id' => 'submitflag')) ?>
+    <?php // echo $this->Form->hidden('GameEvent.submitflag', array('value' => 'search', 'id' => 'submitflag'))  ?>
     <?php echo $this->Form->button(__('Thay đổi'), array('class' => array('btn', 'btn-primary'), 'type' => 'submit', 'id' => 'update')); ?>
 
 </div>
