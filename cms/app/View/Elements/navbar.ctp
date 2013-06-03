@@ -38,6 +38,15 @@
                                 'class' => 'dropdown-submenu',
                             ));
                             ?>
+                            <?php
+                            echo $this->element('menuitem', array(
+                                'title' => 'Company',
+                                'controller' => 'Companies',
+                                'add' => 'add',
+                                'index' => 'index',
+                                'class' => 'dropdown-submenu',
+                            ));
+                            ?>
                         </ul>
                     </li>
                 <?php endif; ?>

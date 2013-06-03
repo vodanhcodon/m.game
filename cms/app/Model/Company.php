@@ -26,5 +26,13 @@ class Company extends AppModel {
             'dependent' => false,
         ),
     );
+    public $validate = array(
+        'name' => array(
+            'required' => array(
+                'rule' => array('notEmpty'),
+                'message' => 'Đây là trường bắt buộc'
+            ),
+        ),
+    );
 
 }

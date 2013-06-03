@@ -1,30 +1,33 @@
 <div class="row-fluid">
     <fieldset>
-        <legend>Danh sách tài khoản</legend>
+        <legend>Danh sách company</legend>
     </fieldset>
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
-                <td>Mã số ID</td>
-                <td>Tên người dùng</td>
-                <td>Kiểu tài khoản</td>
-                <td>Công ty</td>
-                <td>Thao tác</td>
+                <td style="width: 6%">Mã số ID</td>
+                <td>Tên Company</td>
+                <td style="width: 60%">Mô tả</td>
+                <td style="width: 6%">Thao tác</td>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($this->request->data as $user): ?>
-                <?php
-                $acctypes = Configure::read('gom.cmsuser.type');
-                ?>
+            <?php foreach ($company as $item): ?>
                 <tr>
-                    <td><?php echo (int) $user['CmsUser']['id'] ?></td>
-                    <td><?php echo $user['CmsUser']['user_name'] ?></td>
-                    <td><?php echo $acctypes[$user['CmsUser']['type']] ?></td>
-                    <td><?php echo $user['Company']['name'] ?></td>
+                    <td><?php echo $item['Company']['id'] ?></td>
+                    <td><?php echo $item['Company']['name'] ?></td>
+                    <td><?php echo $item['Company']['description'] ?></td>
                     <td class="action">
-                        <?php echo $this->Html->link(null, array('action' => 'edit', (int) $user['CmsUser']['id']), array('title' => 'Chỉnh sửa', 'class' => 'icon-edit')) ?>
-                        <?php echo $this->Form->postLink(null, array('action' => 'delete', (int) $user['CmsUser']['id']), array('title' => 'Xóa', 'class' => 'icon-trash'), 'Bạn có chắc chắn muốn xóa người dùng #' . (int) $user['CmsUser']['id']) ?>
+                        <?php
+                        echo $this->Html->link(null, array(
+                            'action' => 'edit',
+                            (int) $item['Company']['id']), array('title' => 'Chỉnh sửa', 'class' => 'icon-edit'))
+                        ?>
+                        <?php
+                        echo
+                        $this->Form->postLink(null, array('action' => 'delete',
+                            (int) $item['Company']['id']), array('title' => 'Xóa', 'class' => 'icon-trash'), 'Bạn có chắc chắn muốn xóa công ty ' . $item['Company']['name'])
+                        ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
