@@ -111,7 +111,7 @@ echo '<tr><td colspan="2"><hr /></td></tr>';
 echo '<tr><td colspan="2"><table width="100%"><tr>' . 
 		'<td align="center"><a href="#" style="">Top hot</a></td>' .  
 		'<td align="center"><a href="'.$set['homeurl'].'/gamestore/index.php?act=topdownload">Top tải</a></td>' . 
-		'<td align="center"><a href="#">Sự kiện hot</a></td>' . 
+		'<td align="center"><a href="'.$set['homeurl'].'/gamestore/index.php?act=topevent">Sự kiện</a></td>' . 
 		'<td align="center"><a href="#">Diễn đàn</a></td>' . 
 		'</tr></table></td></tr>';
 echo '<tr><td colspan="2"><hr /></td></tr>';
